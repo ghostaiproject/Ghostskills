@@ -25,7 +25,7 @@ description: Use when the user sends /ceig or asks to generate/render an image, 
 OK → download arrow (image top right) → `Downloads\Gemini_Generated_Image_*.jpg` (~1376×768 for 16:9).
 
 ## Upscale
-`wallpaper.ps1 -Name <file> [-SetWallpaper]` (next to this file) → newest Gemini download → 3840×2160 PNG in `Pictures\Wallpapers`. Wallpaper only if asked. Say the source resolution (upscale adds no detail).
+`wallpaper.ps1 -Name <file> [-Source <path>] [-Width 2560 -Height 1440] [-SetWallpaper]` (next to this file) → newest Gemini download (or -Source) → 3840×2160 PNG (or W×H) in `Pictures\Wallpapers`. Wallpaper only if asked. Say the source resolution (upscale adds no detail).
 
 ## End
 Close your tab → path + resolution.

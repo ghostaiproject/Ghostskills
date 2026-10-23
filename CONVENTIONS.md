@@ -5,7 +5,8 @@ A skill's whole SKILL.md is loaded every time it runs, so every line costs token
 ## Layout
 - One folder per skill, folder name = skill name. Commands people type are shared in core: /load, /save, /cmds, /sync, /ship, /list. A project adds its own only when no shared one fits.
 - `core/`: generic skills for everyone. No project names, repos or personal style inside.
-- `projects/<ctx>/`: everything for one project. Every skill name starts with `<ctx>-` so projects never clash or mix. Minimum: one `<ctx>-card` skill (repo, state file, extras, how to ship), which core /load and /save list in their number menu. Users never type project skill names.
+- `projects/<ctx>/`: everything for one project. Every skill name starts with `<ctx>-` so projects never clash or mix. Minimum: one `<ctx>-card` skill (#, repo, branch, state file, extras, how to ship), which core /load and /save list in their number menu. Its description carries `(#N)`: the menu number, fixed forever, next free one for a new project (`/new`). Users never type project skill names.
+- `tools/`: generic helper skills (no project inside) people add only if they need them.
 - `personal/<user>/`: one person's own skills (their devices, their habits); may add their own commands (e.g. /link, /ceig).
 - Context isolation ("never mix ctxs") lives once in core/load; cards don't repeat it.
 
@@ -16,4 +17,4 @@ A skill's whole SKILL.md is loaded every time it runs, so every line costs token
 - Reply style comes from each person's own memory preferences; only project skills that must work without memory (LOCAL sessions) spell it out.
 - Rarely used details go in a separate file the skill reads only when needed.
 - Target: under ~2 KB; hard cap ~5 KB.
-- Change a skill → update it here AND re-upload it on claude.ai so both match.
+- Change a skill → update it here, run `scripts/check.ps1 -Pack` (no FAIL), re-upload its zip from `dist/` on claude.ai so both match. Removed a skill → delete it on claude.ai too.
