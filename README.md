@@ -31,3 +31,4 @@ A `<ctx>-card` holds a project's repo, state file, extras and how it ships, so t
 |---|---|---|
 | [link](personal/ghost/link/SKILL.md) | `/link <msg>` | Phone chat → Claude task on Ghost's laptop |
 | [next](personal/ghost/next/SKILL.md) | (auto) | After computer actions: ask next step, y/n or numbered |
+| [ceig](personal/ghost/ceig/SKILL.md) | `/ceig <idea>` (or auto) | Chrome Extension Image Generation: non-AI-looking images via Gemini in Chrome → download, upscale, wallpaper |
