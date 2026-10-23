@@ -4,7 +4,7 @@ Team Claude skills, written to be token-light. Rules: [CONVENTIONS.md](CONVENTIO
 
 Install on claude.ai: everyone uploads **core**, then only the **project** folders they work on. Personal folders are one person's own; skip them unless you want them.
 
-## Two commands to remember
+## Three commands to remember
 `/load` → numbered menu of your projects (+ memory contexts) → reply with the number.
 `/save` → saves whatever this chat loaded; nothing loaded → same menu.
 `/cmds` → numbered list of every command for the loaded project → reply with the number.
