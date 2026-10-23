@@ -7,6 +7,7 @@ Install on claude.ai: everyone uploads **core**, then only the **project** folde
 ## Two commands to remember
 `/load` → numbered menu of your projects (+ memory contexts) → reply with the number.
 `/save` → saves whatever this chat loaded; nothing loaded → same menu.
+`/cmds` → numbered list of every command for the loaded project → reply with the number.
 Shortcuts: `/load 2`, `/load grocrun`. Numbers stay fixed (A→Z), so they're easy to learn.
 
 ## core (everyone, no project inside)
@@ -14,15 +15,16 @@ Shortcuts: `/load 2`, `/load grocrun`. Numbers stay fixed (A→Z), so they're ea
 |---|---|---|
 | [load](core/load/SKILL.md) | `/load [#\|name]` | Menu, then loads one context; no project card → uses the repo you're in or memory |
 | [save](core/save/SKILL.md) | `/save [#\|name]` | Saves the context loaded in this chat |
+| [cmds](core/cmds/SKILL.md) | `/cmds` `/sync` `/ship` `/list` | Numbered command menu · push work in progress · build a release · tools + lessons |
 
 ## projects (one folder each, never mixed)
-| Project | Skills | Extra commands | Does |
-|---|---|---|---|
-| [grocrun](projects/grocrun) | grocrun-card, grocrun-dev | `/ship` `/sync` `/cmds` `/list` | GrocRun Android app (Grocerierun) |
-| [skills](projects/skills) | skills-card | — | This repo |
-| [window](projects/window) | window-card | — | Echo open-the-windows alert (Ouvrelesfnetre) |
+| Project | Skills | Does |
+|---|---|---|
+| [grocrun](projects/grocrun) | grocrun-card, grocrun-dev | GrocRun Android app (Grocerierun) |
+| [skills](projects/skills) | skills-card | This repo |
+| [window](projects/window) | window-card | Echo open-the-windows alert (Ouvrelesfnetre) |
 
-A `<ctx>-card` holds a project's repo, state file and extras. It joins the menu by itself; nobody types it. New project → copy [projects/_template](projects/_template).
+A `<ctx>-card` holds a project's repo, state file, extras and how it ships, so the shared commands work on it. It joins the menu by itself; nobody types it. New project → copy [projects/_template](projects/_template).
 
 ## personal
 | Skill | Command | Does |
