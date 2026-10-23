@@ -1,16 +1,16 @@
 ---
 name: grocrun-dev
-description: Use for any work on the GrocRun Android app (repo ghostaiproject/Grocerierun), or when the user sends /ship, /sync, /cmds or /list. Load/save: grocrun-load / grocrun-save skills.
+description: Use for any work on the GrocRun Android app (repo ghostaiproject/Grocerierun), or when the user sends /ship, /sync, /cmds or /list. Load/save: /load and /save (card: grocrun-card).
 ---
 # GrocRun dev (follow literally)
 State: HANDOFF.md (repo root). Code work: Read DEV.md + LESSONS.md + CODEMAP.md in ONE batch, then only needed lines (offset/limit ~60). Grep only what CODEMAP lacks.
 
-## Mode (set by /grocrun-load)
+## Mode (set by /load grocrun)
 LOCAL = repo folder on the PC; CLOUD = /home/claude/grocerierun. GitHub main = source of truth: fetch + rebase before work, push after.
 
 ## Tokens
-1. Never switch model mid-chat. Default Sonnet; Opus = new chat + /grocrun-load. "Extra" effort only for hard bugs.
-2. Auto-save via grocrun-save (no ask) after a finished build, ~20 turns, or big reads (3+ long files, logs, images); then one line: "new chat + /grocrun-load".
+1. Never switch model mid-chat. Default Sonnet; Opus = new chat + /load grocrun. "Extra" effort only for hard bugs.
+2. Auto-save via the save skill (no ask) after a finished build, ~20 turns, or big reads (3+ long files, logs, images); then one line: "new chat + /load grocrun".
 3. Task list only for 4+ tool-call builds; update once at the end.
 4. Independent calls in ONE message; chain Bash steps into one command.
 5. Never re-read a file already read/edited; no ls/cat to recheck known state.
@@ -29,11 +29,11 @@ LOCAL = repo folder on the PC; CLOUD = /home/claude/grocerierun. GitHub main = s
 - Tone: casual, light classy-trashy slang, few abbreviations, no cursing unless the user does; admit mistakes plainly.
 
 ## Commands
-/cmds: banner "Commands" + one line each: /grocrun-load, /grocrun-save, /ship, /sync, /cmds, /list, `*` link.
+/cmds: banner "Commands" + one line each: /load, /save, /ship, /sync, /cmds, /list, `*` link.
 
 /list: `ls design`; banner "Tools + lessons"; one line per design/<name>/ script; LESSONS.md grouped by area, one line each. No other reads.
 
-Save extras (run by grocrun-save before HANDOFF.md):
+Save extras (run by /save before HANDOFF.md):
 1. `python3 design/codemap/make_codemap.py` (LOCAL: `python` fallback).
 2. New lesson → one line in LESSONS.md (prune stale).
 3. Rule change → update .claude/skills/grocrun-dev/SKILL.md here AND projects/grocrun/grocrun-dev/SKILL.md in ghostaiproject/Ghostskills; tell the user to re-save it on claude.ai.

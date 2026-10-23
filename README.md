@@ -4,23 +4,25 @@ Team Claude skills, written to be token-light. Rules: [CONVENTIONS.md](CONVENTIO
 
 Install on claude.ai: everyone uploads **core**, then only the **project** folders they work on. Personal folders are one person's own; skip them unless you want them.
 
+## Two commands to remember
+`/load` → numbered menu of your projects (+ memory contexts) → reply with the number.
+`/save` → saves whatever this chat loaded; nothing loaded → same menu.
+Shortcuts: `/load 2`, `/load grocrun`. Numbers stay fixed (A→Z), so they're easy to learn.
+
 ## core (everyone, no project inside)
 | Skill | Command | Does |
 |---|---|---|
-| [load](core/load/SKILL.md) | `/load <name>` | Loads any context; with no project skill, uses the repo you're in or memory |
-| [save](core/save/SKILL.md) | `/save` | Saves the context loaded in this chat |
-| [loadlist](core/loadlist/SKILL.md) | `/loadlist` | Lists installed projects + memory contexts |
+| [load](core/load/SKILL.md) | `/load [#\|name]` | Menu, then loads one context; no project card → uses the repo you're in or memory |
+| [save](core/save/SKILL.md) | `/save [#\|name]` | Saves the context loaded in this chat |
 
 ## projects (one folder each, never mixed)
-| Project | Commands | Does |
-|---|---|---|
-| [grocrun](projects/grocrun) | `/grocrun-load` `/grocrun-save` `/ship` `/sync` `/cmds` `/list` | GrocRun Android app (Grocerierun) |
-| [window](projects/window) | `/window-load` `/window-save` | Echo open-the-windows alert (Ouvrelesfnetre) |
-| [skills](projects/skills) | `/skills-load` `/skills-save` | This repo |
+| Project | Skills | Extra commands | Does |
+|---|---|---|---|
+| [grocrun](projects/grocrun) | grocrun-card, grocrun-dev | `/ship` `/sync` `/cmds` `/list` | GrocRun Android app (Grocerierun) |
+| [skills](projects/skills) | skills-card | — | This repo |
+| [window](projects/window) | window-card | — | Echo open-the-windows alert (Ouvrelesfnetre) |
 
-`/load grocrun` also works: it hands off to `grocrun-load`.
-
-New project → copy [projects/_template](projects/_template).
+A `<ctx>-card` holds a project's repo, state file and extras. It joins the menu by itself; nobody types it. New project → copy [projects/_template](projects/_template).
 
 ## personal
 | Skill | Command | Does |

@@ -3,9 +3,9 @@
 A skill's whole SKILL.md is loaded every time it runs, so every line costs tokens on every use.
 
 ## Layout
-- One folder per skill, folder name = skill name = slash command.
+- One folder per skill, folder name = skill name. Commands people type: /load, /save and project commands (e.g. /ship).
 - `core/`: generic skills for everyone. No project names, repos or personal style inside.
-- `projects/<ctx>/`: everything for one project. Every skill name starts with `<ctx>-` so projects never clash or mix. Minimum: `<ctx>-load` + `<ctx>-save` (a card handed to core load/save).
+- `projects/<ctx>/`: everything for one project. Every skill name starts with `<ctx>-` so projects never clash or mix. Minimum: one `<ctx>-card` skill (repo, state file, extras), which core /load and /save list in their number menu. Users never type project skill names.
 - `personal/<user>/`: one person's own skills (their devices, their habits).
 
 ## Writing
