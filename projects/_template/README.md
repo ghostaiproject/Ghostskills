@@ -14,5 +14,4 @@ description: Use only when a core skill (load, save, cmds) picks <ctx>: holds <w
 # <ctx> card
 ctx <ctx> · <3-5 words> · repo <owner>/<repo> (or none) · state HANDOFF.md · also load: — · load extras: — · save extras: —.
 Ship: version spot · CI workflow file · local build command (or —) · List: default (design/ + LESSONS.md) · Extra cmds: —.
-<Project> only: no other project's state, rules or memory.
 ```
