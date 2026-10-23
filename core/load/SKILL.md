@@ -1,9 +1,9 @@
 ---
 name: load
-description: Use when the user sends /load (with a name, a number, or nothing): starts a chat on one context, picked from a numbered menu, kept apart from every other context.
+description: Use when the user sends /load (with a name, a number, or nothing), or the save/cmds skill needs its menu: starts a chat on one context, picked from a numbered menu, kept apart from every other context.
 ---
 # /load [name|#]
-Card = ctx · repo (owner/name or none) · state file · also load · load extras · save extras.
+Card = ctx · repo (owner/name or none) · state file · also load · load extras · save extras · ship · list · extra cmds.
 
 ## Menu (no tool calls)
 List = every `<ctx>-card` skill in the skill list (A→Z), then memory /areas names not covered (A→Z). Order never changes, so numbers stay the same.
