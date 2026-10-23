@@ -11,7 +11,7 @@ description: Use when the user sends /load [context] to start a chat on a projec
 | skills | Ghostskills | README.md | CONVENTIONS.md |
 | other | none | memory /areas/<ctx>.md | — |
 Each ctx is separate: never mix state, rules or memory between rows.
-New ctx → add a row here (Ghostskills repo) + re-save on claude.ai.
+New ctx → add a row here + in loadlist (Ghostskills repo) + re-save both on claude.ai.
 
 ## Steps
 1. No ctx or unknown → one box listing ctx names; ask.
