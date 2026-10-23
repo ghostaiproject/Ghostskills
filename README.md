@@ -1,10 +1,8 @@
 # Ghostskills
 
-My personal Claude skills. One folder per skill under `skills/`, each with its own `SKILL.md`.
+My Claude skills, written to be token-light. Rules: [CONVENTIONS.md](CONVENTIONS.md).
 
-| Skill | Command | What it does |
+| Skill | Commands | Does |
 |---|---|---|
-| [link](skills/link/SKILL.md) | `/link <msg>` | Relays a message from my phone chat to a Claude task running on my laptop |
-| [grocrun-dev](skills/grocrun-dev/SKILL.md) | `/load` `/save` `/ship` `/sync` `/cmds` `/list` | Dev workflow for the GrocRun Android app |
-
-New skills get added here as `skills/<name>/SKILL.md`.
+| [link](skills/link/SKILL.md) | `/link <msg>` | Phone chat → Claude task on my laptop |
+| [grocrun-dev](skills/grocrun-dev/SKILL.md) | `/load` `/save` `/ship` `/sync` `/cmds` `/list` | GrocRun Android app dev workflow |
