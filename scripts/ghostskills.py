@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Ghostskills vault core: init, lint, search, reviewed transactions, hooks. Stdlib only."""
-import argparse, base64, fnmatch, hashlib, json, math, os, re, sys, tempfile
+import argparse, base64, contextlib, fnmatch, hashlib, json, math, os, re, sys, tempfile, time
 from datetime import date
 from pathlib import Path
 
@@ -8,6 +8,8 @@ ROOT = Path(__file__).resolve().parents[1]
 TX = "ghostskills.transaction.v1"
 CONFLICT = 75
 META = {"index", "log", "hot", "overview"}
+WIN_RESERVED = re.compile(r"(con|prn|aux|nul|com\d|lpt\d)(\..*)?", re.I)
+LOCK_STALE = 120
 WIKILINK = re.compile(r"!?\[\[([^\]|#]+)(?:#[^\]|]*)?(?:\|[^\]]*)?\]\]")
 sha = lambda b: hashlib.sha256(b).hexdigest()
 canon = lambda o: json.dumps(o, sort_keys=True, separators=(",", ":")).encode()
@@ -42,10 +44,21 @@ def resolve_vault(arg):
     return v
 
 
+def rd(p):
+    """Tolerant text read: BOM stripped, undecodable bytes replaced (one bad page never crashes a command)."""
+    return p.read_bytes().decode("utf-8-sig", errors="replace")
+
+
 def safe_target(vault, rel):
+    if not isinstance(rel, str):
+        raise Fail("path must be a string")
     p = Path(rel)
-    if p.is_absolute() or ".." in p.parts or "\\" in rel or not p.parts:
+    if (p.is_absolute() or ".." in p.parts or "\\" in rel or len(p.parts) < 2
+            or "\0" in rel or ":" in rel or "//" in rel or rel.endswith("/") or "/./" in rel or rel.startswith("./")):
         raise Fail(f"unsafe path: {rel}")
+    for part in p.parts:
+        if part == "." or part != part.strip() or part.endswith(".") or len(part) > 200 or WIN_RESERVED.fullmatch(part):
+            raise Fail(f"unsafe path component {part!r}: {rel}")
     if p.parts[0] not in ("wiki", ".raw"):
         raise Fail(f"writes allowed only under wiki/ and .raw/: {rel}")
     t = (vault / p).resolve()
@@ -64,6 +77,33 @@ def atomic_write(p, data):
     with os.fdopen(fd, "wb") as f:
         f.write(data)
     os.replace(tmp, p)
+
+
+@contextlib.contextmanager
+def vault_lock(vault):
+    """Exclusive per-vault lock so concurrent applies cannot interleave (lost updates)."""
+    lp = vault / ".vault-meta" / "lock"
+    lp.parent.mkdir(parents=True, exist_ok=True)
+    for _ in range(2):
+        try:
+            fd = os.open(lp, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+            break
+        except FileExistsError:
+            try:
+                if time.time() - lp.stat().st_mtime > LOCK_STALE:
+                    lp.unlink()
+                    continue
+            except OSError:
+                pass
+            raise Fail("vault is locked by another apply; retry shortly", CONFLICT)
+    else:
+        raise Fail("could not take vault lock", CONFLICT)
+    try:
+        os.write(fd, str(os.getpid()).encode())
+        os.close(fd)
+        yield
+    finally:
+        lp.unlink(missing_ok=True)
 
 
 # ---- init ----
@@ -93,14 +133,23 @@ def cmd_init(a):
 
 # ---- transactions ----
 def load_bundle(path):
-    b = json.loads(Path(path).read_text("utf-8"))
-    if b.get("version") != TX:
+    try:
+        b = json.loads(Path(path).read_text("utf-8-sig"))
+    except (OSError, ValueError) as e:
+        raise Fail(f"cannot read bundle: {e}")
+    if not isinstance(b, dict) or b.get("version") != TX:
         raise Fail(f"bundle version must be {TX}")
     for k in ("operation_id", "operation_type", "writes"):
         if k not in b:
             raise Fail(f"bundle missing {k}")
-    if not re.fullmatch(r"[\w.-]{1,80}", b["operation_id"]):
+    op = b["operation_id"]
+    if not isinstance(op, str) or not re.fullmatch(r"[\w.-]{1,80}", op) or not op.strip(".") or WIN_RESERVED.fullmatch(op):
         raise Fail("bad operation_id")
+    if not isinstance(b["writes"], list) or not b["writes"]:
+        raise Fail("writes must be a non-empty list")
+    for i, w in enumerate(b["writes"]):
+        if not isinstance(w, dict) or not isinstance(w.get("path"), str) or not isinstance(w.get("content"), str):
+            raise Fail(f"writes[{i}] needs string path and content")
     return b
 
 
@@ -111,6 +160,10 @@ def inspect(vault, b):
         cur, mode = read_sha(t), w.get("mode")
         if mode not in ("create", "replace"):
             raise Fail(f"{w['path']}: mode must be create or replace")
+        if w["path"] in final:
+            problems.append(f"{w['path']}: listed twice")
+        if t.exists() and not t.is_file():
+            problems.append(f"{w['path']}: target is not a regular file")
         if mode == "create" and cur is not None:
             problems.append(f"{w['path']}: exists, create refused")
         if mode == "replace":
@@ -130,10 +183,10 @@ def inspect(vault, b):
         if hot is not None and len(hot.split()) > 500:
             wf.append("hot.md over 500 words")
         idx = vault / "wiki/index.md"
-        index = final.get("wiki/index.md") or (idx.read_text("utf-8") if idx.is_file() else "")
+        index = final.get("wiki/index.md") or (rd(idx) if idx.is_file() else "")
         for p in final:
             if p.startswith("wiki/") and Path(p).stem.lower() not in META and modes[p] == "create":
-                if f"[[{Path(p).stem}" not in index:
+                if not re.search(r"\[\[" + re.escape(Path(p).stem) + r"\s*[|#\]]", index, re.I):
                     wf.append(f"{p}: new page not linked from wiki/index.md")
     plan = {"operation_id": b["operation_id"], "changed": changed, "storage_valid": not problems,
             "workflow_complete": not wf, "problems": problems + wf}
@@ -162,6 +215,11 @@ def rollback(vault, j):
 def cmd_apply(a):
     vault = resolve_vault(a.vault)
     b = load_bundle(a.bundle)
+    with vault_lock(vault):
+        _apply(vault, b, a.approved_plan_sha256)
+
+
+def _apply(vault, b, approved):
     bsha = sha(canon(b))
     jp = jdir(vault) / f"{b['operation_id']}.json"
     if jp.is_file():
@@ -172,7 +230,7 @@ def cmd_apply(a):
     plan = inspect(vault, b)
     if not (plan["storage_valid"] and plan["workflow_complete"]):
         raise Fail("inspect failed: " + "; ".join(plan["problems"]), CONFLICT)
-    if a.approved_plan_sha256 != plan["approval_sha256"]:
+    if approved != plan["approval_sha256"]:
         raise Fail("approved plan hash does not match; re-inspect and review")
     backups = {}
     for w in b["writes"]:
@@ -183,37 +241,41 @@ def cmd_apply(a):
     try:
         for w in b["writes"]:
             atomic_write(safe_target(vault, w["path"]), w["content"].encode("utf-8"))
-    except Exception:
+    except Exception as e:
         rollback(vault, j)
         jp.unlink()
-        raise
-    j["state"] = "done"
-    atomic_write(jp, canon(j))
+        raise Fail(f"write failed, rolled back: {e}", 1)
+    atomic_write(jp, canon({"bundle_sha256": bsha, "state": "done", "backups": {}}))
     out({"operation_id": b["operation_id"], "applied": True, "paths": [w["path"] for w in b["writes"]]})
 
 
 def cmd_recover(a):
     vault = resolve_vault(a.vault)
+    if not re.fullmatch(r"[\w.-]{1,80}", a.operation_id):
+        raise Fail("bad operation_id")
     jp = jdir(vault) / f"{a.operation_id}.json"
-    if not jp.is_file():
-        raise Fail("no such operation")
-    j = json.loads(jp.read_text("utf-8"))
-    if j["state"] == "done":
-        return out({"operation_id": a.operation_id, "recovered": False, "note": "already complete"})
-    rollback(vault, j)
-    jp.unlink()
+    with vault_lock(vault):
+        if not jp.is_file():
+            raise Fail("no such operation")
+        j = json.loads(jp.read_text("utf-8"))
+        if j["state"] == "done":
+            return out({"operation_id": a.operation_id, "recovered": False, "note": "already complete"})
+        rollback(vault, j)
+        jp.unlink()
     out({"operation_id": a.operation_id, "recovered": True, "rolled_back": sorted(j["backups"])})
 
 
 # ---- pages, lint, search ----
 def pages(vault, excludes=()):
     res = {}
+    if not (vault / "wiki").is_dir():
+        raise Fail("vault has no wiki/ directory")
     for p in sorted((vault / "wiki").rglob("*.md")):
         parts = p.relative_to(vault).parts
         rel = "/".join(parts)
         if any(x.startswith(".") for x in parts) or any(fnmatch.fnmatch(rel, e) for e in excludes):
             continue
-        res[rel] = p.read_text("utf-8")
+        res[rel] = rd(p)
     return res
 
 
@@ -232,11 +294,18 @@ def links(text):
             yield i, m.group(1).strip()
 
 
-def resolve_link(target, stems, paths):
+def suffix_index(paths):
+    idx = {}
+    for p in paths:
+        parts = p.lower().removesuffix(".md").split("/")
+        for i in range(len(parts)):
+            idx.setdefault("/".join(parts[i:]), []).append(p)
+    return idx
+
+
+def resolve_link(target, stems, sufx):
     t = target.lower().removesuffix(".md")
-    if "/" in t:
-        return [p for p in paths if p.lower().removesuffix(".md").endswith(t)]
-    return stems.get(t, [])
+    return sufx.get(t, []) if "/" in t else stems.get(t, [])
 
 
 def cmd_lint(a):
@@ -245,6 +314,7 @@ def cmd_lint(a):
     stems = {}
     for p in pg:
         stems.setdefault(Path(p).stem.lower(), []).append(p)
+    sufx = suffix_index(pg)
     found, inbound = [], {p: 0 for p in pg}
     add = lambda rule, p, ln, d: found.append({"rule": rule, "path": p, "line": ln, "detail": d})
     for p, text in pg.items():
@@ -253,7 +323,7 @@ def cmd_lint(a):
             if not fm.get(k):
                 add("frontmatter", p, 1, f"missing {k}")
         for ln, tgt in links(text):
-            hit = resolve_link(tgt, stems, pg)
+            hit = resolve_link(tgt, stems, sufx)
             if not hit:
                 add("dead-link", p, ln, tgt)
             elif len(hit) > 1:
@@ -271,7 +341,7 @@ def cmd_lint(a):
             add("orphan", p, 1, "no inbound links")
     if "wiki/index.md" in pg:
         for ln, tgt in links(pg["wiki/index.md"]):
-            if not resolve_link(tgt, stems, pg):
+            if not resolve_link(tgt, stems, sufx):
                 add("stale-index", "wiki/index.md", ln, tgt)
     rep = {"pages": len(pg), "findings": found,
            "by_rule": {r: sum(f["rule"] == r for f in found) for r in sorted({f["rule"] for f in found})}}
@@ -301,15 +371,15 @@ def cmd_search(a):
                 s += idf * f * 2.2 / (f + 1.2 * (.25 + .75 * len(d) / avg))
         if s:
             res.append((s, p))
-    out([{"path": p, "score": round(s, 3)} for s, p in sorted(res, reverse=True)[:a.top]])
+    out([{"path": p, "score": round(s, 3)} for s, p in sorted(res, reverse=True)[:max(a.top, 0)]])
 
 
 # ---- hooks (default-off, bounded) ----
 def cmd_hook(a):
     if a.event == "session-start" and os.environ.get("GHOSTSKILLS_SESSION_CONTEXT") == "1":
         try:
-            hot = (resolve_vault(None) / "wiki/hot.md").read_text("utf-8")[:2000]
-        except Fail:
+            hot = rd(resolve_vault(None) / "wiki/hot.md")[:2000]
+        except (Fail, OSError):
             return 0
         getattr(sys.stdout, "reconfigure", lambda **k: None)(encoding="utf-8")
         print(json.dumps({"hookSpecificOutput": {"hookEventName": "SessionStart", "additionalContext": hot}}))

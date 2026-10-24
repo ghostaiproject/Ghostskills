@@ -3,7 +3,7 @@
 Team Claude skills, written to be token-light. Rules: [CONVENTIONS.md](CONVENTIONS.md).
 
 Install on claude.ai: everyone uploads **core**, then only the **project** folders they work on. Personal folders are one person's own; skip them unless you want them. `tools` = generic helpers, add the ones you need.
-Upload files: `scripts/check.ps1 -Pack` (Windows: `powershell -ExecutionPolicy Bypass -File scripts\check.ps1 -Pack`) → one zip per skill in `dist/`.
+Token cost per skill: `scripts/check.ps1 -Tokens` (fails if skill descriptions exceed ~3000 tokens/chat). Upload files: `scripts/check.ps1 -Pack` (Windows: `powershell -ExecutionPolicy Bypass -File scripts\check.ps1 -Pack`) → one zip per skill in `dist/`.
 
 ## Commands to remember
 `/load` → numbered menu of your projects (+ memory contexts) → reply with the number.

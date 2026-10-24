@@ -97,5 +97,110 @@ class VaultTests(unittest.TestCase):
         self.assertFalse((self.v / "wiki/New.md").exists())
 
 
+class HardeningTests(VaultTests):
+    def raw_bundle(self, writes, op="h"):
+        p = Path(self.tmp.name) / "h.json"
+        p.write_text(json.dumps({"version": g.TX, "operation_id": op, "operation_type": "other", "writes": writes}))
+        return p
+
+    def test_malformed_bundles_fail_cleanly(self):
+        p = Path(self.tmp.name) / "m.json"
+        ok = {"version": g.TX, "operation_id": "a", "operation_type": "x"}
+        for body in ("{nope", "[]", json.dumps({**ok, "writes": None}), json.dumps({**ok, "writes": []}),
+                     json.dumps({**ok, "writes": [{"mode": "create", "content": "x"}]}),
+                     json.dumps({**ok, "writes": [{"path": "wiki/a.md", "mode": "create"}]}),
+                     json.dumps({**ok, "writes": [{"path": "wiki/a.md", "mode": "create", "content": 5}]})):
+            p.write_text(body)
+            self.assertEqual(run("inspect", p, "--vault", self.v)[0], 2, body)
+
+    def test_windows_unsafe_paths_rejected(self):
+        for bad in ("wiki", "wiki/", "wiki/CON.md", "wiki/a.md.", "wiki/ a.md", "wiki//x.md", "wiki/a.md:s",
+                    "wiki/x\x00.md", ".raw", "wiki/./x.md"):
+            b = self.raw_bundle([{"path": bad, "mode": "create", "content": "x"}])
+            self.assertEqual(run("inspect", b, "--vault", self.v)[0], 2, bad)
+
+    def test_duplicate_and_directory_targets_flagged(self):
+        dup = [{"path": "wiki/D.md", "mode": "create", "content": "1"}] * 2
+        self.assertFalse(json.loads(run("inspect", self.raw_bundle(dup), "--vault", self.v)[1])["storage_valid"])
+        (self.v / "wiki/Dir.md").mkdir()
+        one = [{"path": "wiki/Dir.md", "mode": "create", "content": "1"}]
+        self.assertFalse(json.loads(run("inspect", self.raw_bundle(one), "--vault", self.v)[1])["storage_valid"])
+
+    def test_lock_blocks_concurrent_apply_and_stale_lock_cleared(self):
+        b = self.bundle()
+        plan = json.loads(run("inspect", b, "--vault", self.v)[1])
+        lock = self.v / ".vault-meta" / "lock"
+        lock.parent.mkdir(parents=True, exist_ok=True)
+        lock.write_text("1")
+        self.assertEqual(run("apply", b, "--vault", self.v, "--approved-plan-sha256", plan["approval_sha256"])[0], g.CONFLICT)
+        old = g.time.time() - g.LOCK_STALE - 5
+        g.os.utime(lock, (old, old))
+        self.assertEqual(run("apply", b, "--vault", self.v, "--approved-plan-sha256", plan["approval_sha256"])[0], 0)
+        self.assertFalse(lock.exists())
+
+    def test_write_failure_rolls_back_with_clean_error(self):
+        hot = self.v / "wiki/hot.md"
+        before = hot.read_bytes()
+        b = self.bundle()
+        plan = json.loads(run("inspect", b, "--vault", self.v)[1])
+        real = g.atomic_write
+        g.atomic_write = lambda p, d: (_ for _ in ()).throw(OSError("disk full")) if p.name == "hot.md" and b"New note" in d else real(p, d)
+        try:
+            code = run("apply", b, "--vault", self.v, "--approved-plan-sha256", plan["approval_sha256"])[0]
+        finally:
+            g.atomic_write = real
+        self.assertEqual(code, 1)
+        self.assertEqual(hot.read_bytes(), before)
+        self.assertFalse((self.v / "wiki/Note.md").exists())
+
+    def test_done_journal_drops_backups(self):
+        b = self.bundle()
+        plan = json.loads(run("inspect", b, "--vault", self.v)[1])
+        run("apply", b, "--vault", self.v, "--approved-plan-sha256", plan["approval_sha256"])
+        self.assertEqual(json.loads((g.jdir(self.v) / "save-1.json").read_text())["backups"], {})
+
+    def test_bom_latin1_and_missing_wiki_do_not_crash(self):
+        (self.v / "wiki/Bom.md").write_bytes(b"\xef\xbb\xbf---\ntype: x\ntitle: y\n---\n# Bom\n[[index]]\n")
+        (self.v / "wiki/Lat.md").write_bytes("---\ntype: x\ntitle: y\n---\n# caf\xe9 [[index]]\n".encode("latin-1"))
+        rep = json.loads(run("lint", "--vault", self.v)[1])
+        self.assertFalse([f for f in rep["findings"] if f["path"].endswith("Bom.md") and f["rule"] == "frontmatter"])
+        self.assertEqual(run("search", "caf", "--vault", self.v)[0], 0)
+        import shutil
+        shutil.rmtree(self.v / "wiki")
+        self.assertEqual(run("lint", "--vault", self.v)[0], 2)
+
+    def test_hook_never_crashes(self):
+        import os
+        os.environ["GHOSTSKILLS_SESSION_CONTEXT"] = "1"
+        cwd = os.getcwd()
+        os.chdir(self.v)
+        try:
+            (self.v / "wiki/hot.md").write_bytes(b"\xff\xfe bad")
+            self.assertEqual(run("hook", "session-start")[0], 0)
+            (self.v / "wiki/hot.md").unlink()
+            self.assertEqual(run("hook", "session-start")[0], 0)
+        finally:
+            os.chdir(cwd)
+            os.environ.pop("GHOSTSKILLS_SESSION_CONTEXT")
+
+    def test_index_link_must_match_exactly_and_top_negative(self):
+        b = self.bundle(page="Note")
+        data = json.loads(b.read_text())
+        for w in data["writes"]:
+            if w["path"] == "wiki/index.md":
+                w["content"] = w["content"].replace("[[Note]]", "[[Notebook]]")
+        b.write_text(json.dumps(data))
+        self.assertFalse(json.loads(run("inspect", b, "--vault", self.v)[1])["workflow_complete"])
+        self.assertEqual(run("search", "index", "--vault", self.v, "--top", "-1")[0], 0)
+
+    def test_path_links_resolve_by_suffix(self):
+        (self.v / "wiki/sub").mkdir()
+        (self.v / "wiki/sub/Deep.md").write_text("---\ntype: x\ntitle: d\n---\n# d\n[[index]]\n", "utf-8")
+        (self.v / "wiki/Src.md").write_text("---\ntype: x\ntitle: s\n---\n# s\n[[sub/Deep]] [[nope/Deep]]\n", "utf-8")
+        rep = json.loads(run("lint", "--vault", self.v)[1])
+        dead = [f["detail"] for f in rep["findings"] if f["rule"] == "dead-link"]
+        self.assertEqual(dead, ["nope/Deep"])
+
+
 if __name__ == "__main__":
     unittest.main()
