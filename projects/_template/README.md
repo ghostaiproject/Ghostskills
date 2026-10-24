@@ -15,5 +15,5 @@ description: Use only when a core skill (load, save, cmds) picks <ctx> (#<n>): h
 ---
 # <ctx> card
 ctx <ctx> · #<n> · <3-5 words> · repo <owner>/<repo> (or none) · branch main · state HANDOFF.md · also load: — · load extras: — · save extras: —.
-Ship: version spot · CI workflow file · local build command (or —) · List: default (design/ + LESSONS.md) · Extra cmds: —.
+Ship: version spot · CI workflow file · local build command (or —) · List: default (design/ + LESSONS.md) · Extra cmds: — (or `/name <arg>` → one command each).
 ```
