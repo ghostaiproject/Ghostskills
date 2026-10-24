@@ -1,6 +1,6 @@
 ---
 name: ceig
-description: Use when the user sends /ceig or asks to generate/render an image, wallpaper or artwork: Gemini in Chrome → download → upscale → optional wallpaper.
+description: Use when the user sends /ceig or asks to generate/render an image, wallpaper or artwork, or to review a page's images: Gemini in Chrome → download → upscale → optional wallpaper.
 ---
 # /ceig: Chrome Extension Image Generation (Gemini)
 
@@ -25,13 +25,15 @@ description: Use when the user sends /ceig or asks to generate/render an image, 
 - Look at the result at full size: it must fit its exact spot (format, subject, palette, background) and pass an art director's bar (no artifacts, no stray text, clean edges, nothing generic).
 - Below the bar → say what is off and regenerate in the same chat with a sharper prompt; never save a weak image.
 - Copy without download: `canvas.drawImage(img)` → `toBlob` → `navigator.clipboard.write([new ClipboardItem({'image/png':blob})])` in the page (works when Gemini shows only share/download), then PowerShell `Clipboard.GetImage()`.
+- Size: image px ≥ its box on the page × devicePixelRatio (JS `getBoundingClientRect`); smaller → regenerate bigger (16:9 ≈ 1376 wide).
 - After saving, Read the saved file once to confirm it is the right image (Gemini's copy button can belong to an older image).
 
-## In-project review loop (after first gen, when the image is for a project)
-1. Put the saved image in its real spot in the project (the asset path the page uses) and open the project in the built-in browser (`preview_start` by name, or reload the open tab).
+## In-project review loop (after first gen for a project; `/ceig review` = steps 1–2 on the current images, no gen)
+1. Put the saved image in its real spot in the project (the asset path the page uses) and open the project in the built-in browser (`preview_start` by name, or reload the open tab). No launch config / file:// blocked → background `python -m http.server <port>` in the page folder → `preview_start {url}`; stop it at End.
 2. Screenshot the page at `scale` 0.5 with the image in place; compare it with the Gemini result: fit, crop, palette vs the page, contrast with text/UI over it, style match, artifacts.
 3. Perfect → stop. Otherwise list the concrete fixes and reprompt Gemini in the same chat ("keep the rest, change: …"), save, swap it in, screenshot again.
 4. Max 3 reprompts after the first gen. After the last one, keep the best version and say what is still off.
+5. Report: 1 line per finding, max 5. Choices → AskUserQuestion picker, never prose.
 
 ## Download (ask first)
 OK → download arrow (image top right) → `Downloads\Gemini_Generated_Image_*.jpg` (~1376×768 for 16:9).
