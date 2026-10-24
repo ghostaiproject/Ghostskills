@@ -238,11 +238,10 @@ function draw(t){
     if(!isS){cx.fillStyle=c+'cc';cx.beginPath();cx.arc(n.x,n.y,r*0.32,0,7);cx.fill()}
     n.lr=r;
   });
-  // labels last so no node paints over them; narrow maps use 10px, max 12 chars
+  // label only the selected node, drawn last so no node paints over it
   var narrow=W<=620;cx.textBaseline='middle';cx.lineJoin='round';
   N.forEach(function(n){
-    if(!on[n.k])return;var isS=sel===n,txt=n.id;
-    if(narrow&&txt.length>12)txt=txt.slice(0,11)+'\u2026';
+    if(!on[n.k]||sel!==n)return;var isS=true,txt=n.id;
     cx.font=(isS?'600 ':'400 ')+(narrow?'10px':'11px')+' "IBM Plex Mono",monospace';
     var tw=cx.measureText(txt).width,gap=n.lr+6,c=CL[n.k];
     // narrow: point labels away from their cluster centre, flip if they would leave the canvas
