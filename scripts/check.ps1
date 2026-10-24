@@ -40,17 +40,17 @@ foreach ($f in $skills) {
 Get-ChildItem (Join-Path $root 'projects') -Directory | Where-Object Name -ne '_template' | ForEach-Object {
     if (-not (Test-Path (Join-Path $_.FullName "$($_.Name)-card/SKILL.md"))) { Fail "projects/$($_.Name): no $($_.Name)-card" }
 }
-# edged/ is public and loaded every chat: size caps + no private data.
-$edged = Join-Path $root 'edged'
-if (Test-Path $edged) {
-    Get-ChildItem $edged -Recurse -Filter *.md | ForEach-Object {
+# cer-01/ is public and loaded every chat: size caps + no private data.
+$cer = Join-Path $root 'cer-01'
+if (Test-Path $cer) {
+    Get-ChildItem $cer -Recurse -Filter *.md | ForEach-Object {
         $rel = $_.FullName.Substring($root.Length + 1) -replace '\\', '/'
         $cap = if ($_.Name -eq 'CORE.md') { 1.5 } elseif ($_.Directory.Name -eq 'people') { 1 } else { 4 }
         $kb = [math]::Round($_.Length / 1KB, 2)
-        if ($kb -gt $cap) { Fail "${rel}: $kb KB > $cap KB edged cap" }
+        if ($kb -gt $cap) { Fail "${rel}: $kb KB > $cap KB cer-01 cap" }
         $text = Get-Content $_.FullName -Raw
-        if ($text -match '[\w.+-]+@[\w-]+\.[a-z]{2,}') { Fail "${rel}: looks like an email ($($Matches[0])); edged is public" }
-        if ($text -match '(?<!\d)(\+?\d{1,3}[ .-]?)?\(?\d{3}\)?[ .-]?\d{3}[ .-]?\d{4}(?!\d)') { Fail "${rel}: looks like a phone number; edged is public" }
+        if ($text -match '[\w.+-]+@[\w-]+\.[a-z]{2,}') { Fail "${rel}: looks like an email ($($Matches[0])); cer-01 is public" }
+        if ($text -match '(?<!\d)(\+?\d{1,3}[ .-]?)?\(?\d{3}\)?[ .-]?\d{3}[ .-]?\d{4}(?!\d)') { Fail "${rel}: looks like a phone number; cer-01 is public" }
     }
 }
 Write-Output "$($skills.Count) skills checked, $script:fails failed"
