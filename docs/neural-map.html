@@ -32,6 +32,7 @@ h1{font:400 clamp(40px,9vw,92px)/.95 var(--f-display);margin:0;color:var(--bone)
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(calc((100% - 33px)/5),1fr));gap:8px;margin-top:6px;max-width:760px}
 @media(max-width:600px){.stats{grid-template-columns:repeat(auto-fit,minmax(calc((100% - 17px)/3),1fr))}}
 .stat{border:1px solid var(--line);background:var(--panel);padding:8px 12px;font:600 12px var(--f-label);letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+@media(max-width:400px){.stat{padding:8px;letter-spacing:.06em;font-size:11px;min-width:0;overflow-wrap:anywhere}}
 .stat b{display:block;font:700 26px/1.1 var(--f-label);color:var(--acid);letter-spacing:0;font-variant-numeric:tabular-nums}
 
 h2{font:700 13px var(--f-label);letter-spacing:.3em;text-transform:uppercase;color:var(--violet);margin:44px 0 12px;display:flex;align-items:center;gap:12px}
@@ -176,9 +177,11 @@ function layout(){
     var slot=small?PHONE_SLOT[k]:i,a=-Math.PI/2+slot*2*Math.PI/ks.length;
     var cxk=W/2+Math.cos(a)*(small?W*0.3:R*(W>H?1.25:1)),cyk=H/2+Math.sin(a)*(small?H*0.33:R);
     var items=N.filter(function(n){return n.k===k});
-    CL[k].x=cxk;CL[k].y=cyk;
     // 6+ nodes (the wiki cluster) get a wider ring so they don't touch
     var rr=items.length>1?((small?26:30)+items.length*(small?4:5))*(items.length>5?(small?1.04:1.4):1):0;
+    // keep the whole ring, plus a selected node's growth, inside the side edges
+    var m=rr+(small?11:12)+10;cxk=Math.min(Math.max(cxk,m),W-m);
+    CL[k].x=cxk;CL[k].y=cyk;
     items.forEach(function(n,j){var b=a+j*2*Math.PI/items.length+i;n.x=cxk+Math.cos(b)*rr;n.y=cyk+Math.sin(b)*rr;n.r=items.length>1?(small?11:9):12});
   });
 }
