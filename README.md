@@ -10,6 +10,7 @@ Upload files: `scripts/check.ps1 -Pack` (Windows: `powershell -ExecutionPolicy B
 `/save` → saves whatever this chat loaded; nothing loaded → same menu.
 `/cmds` → numbered list of every command for the loaded project → reply with the number.
 `/new <ctx>` → adds a project (card + README row + next number).
+`/edged` → the crew's shared personality: harvest, add, +1, tidy, show.
 Shortcuts: `/load 1`, `/load grocrun`. Every card owns its number for good (#1 grocrun, #2 skills, #3 window); a new project gets the next one, so numbers never shift.
 
 ## core (everyone, no project inside)
@@ -27,6 +28,15 @@ Shortcuts: `/load 1`, `/load grocrun`. Every card owns its number for good (#1 g
 | 3 | [window](projects/window) | window-card (+ tools/alexa-console-edit) | Echo open-the-windows alert (Ouvrelesfnetre) |
 
 A `<ctx>-card` holds a project's number, repo, branch, state file, extras and how it ships, so the shared commands work on it. It joins the menu by itself; nobody types it. New project → copy [projects/_template](projects/_template).
+
+## edged (everyone, shared personality)
+[edged](edged/SKILL.md): one personality for the whole crew, kept in git and merged to main.
+- **CORE.md** (every chat): voice, quirks, catchphrases, moments, never-say list. **people/<handle>.md**: your lang, edge level (1 chill · 2 spicy · 3 full send), screen, likes, nevers.
+- Read only when needed: glossary.md, takes.md, lore/<ctx>.md, lessons/<ctx>.md (one file per project, so a chat only pays for its own). Rare steps (first time, harvest, /edged, write) are separate files too.
+- `/load` pulls the live CORE + your people file from GitHub, so merges reach everyone's next chat with no re-upload. First time → 3 quick questions; first /load of a project → 2 lines of that project's lore + lessons.
+- `/save` ends with a harvest: ≤3 things from the chat worth keeping (a line that got a lmao, a new term, a gotcha) → you pick → merged to main. No push rights → a PR.
+- `/edged +1 <words>` votes; `/edged tidy` promotes lines with 2+ votes into CORE.
+- **The repo is public**: handles only. The checker blocks emails and phone numbers and caps sizes (CORE 1.5 KB, people 1 KB, others 4 KB).
 
 ## tools (generic, add when needed)
 | Skill | Does |
