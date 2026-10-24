@@ -2,6 +2,13 @@
 
 Team Claude skills, written to be token-light. Rules: [CONVENTIONS.md](CONVENTIONS.md).
 
+## Install on your PC (Claude Code, synced by git)
+Needs git (`winget install Git.Git`). In PowerShell, pick your projects (and your personal folder, if you have one):
+```
+irm https://raw.githubusercontent.com/ghostaiproject/Ghostskills/main/scripts/install.ps1 -OutFile $env:TEMP\gs.ps1; powershell -ExecutionPolicy Bypass -File $env:TEMP\gs.ps1 -Projects grocrun,window
+```
+→ clones to `~/Ghostskills`, links core + cer-01 + tools + your projects into `~/.claude/skills` (old copies backed up), adds a SessionStart hook so every Claude session pulls main and links new skills. Edits you make land in the repo → `/sync` pushes them (no push rights → ask for a collaborator invite, or PR from a fork). Re-run with other `-Projects` any time.
+
 Install on claude.ai: everyone uploads **core**, then only the **project** folders they work on. Personal folders are one person's own; skip them unless you want them. `tools` = generic helpers, add the ones you need.
 Upload files: `scripts/check.ps1 -Pack` (Windows: `powershell -ExecutionPolicy Bypass -File scriptseck.ps1 -Pack`) → one zip per skill in `dist/`.
 
