@@ -60,6 +60,7 @@ A `<ctx>-card` holds a project's number, repo, branch, state file, extras and ho
 | [do](personal/ghost/do/SKILL.md) | `/do <task>` | Asks y/n, then controls the PC. Needs [do-gate.ps1](personal/ghost/do/do-gate.ps1) in `~/.claude/hooks` + UserPromptSubmit/PreToolUse hooks |
 | [remote-view](personal/ghost/remote-view/SKILL.md) | (auto) / "remote view" | Low-token PC work: text-first, one screenshot at the end |
 | [ceig](personal/ghost/ceig/SKILL.md) | `/ceig <idea>` (or auto) | Chrome Extension Image Generation: non-AI-looking images via Gemini in Chrome → download, upscale, wallpaper |
+| [crew](personal/ghost/crew/SKILL.md) | `/crew` (or auto) | Free second brains before Claude answers: Gemini images, local Python calc, ChatGPT opinion. One command (`crew.py`), ≤10 lines back, cached, no API keys. Setup: `pip install playwright` |
 
 ## Keeping it healthy
 `scripts/check.ps1` lints every skill (name = folder, `<ctx>-` prefix, card numbers, size, no project repos in core); CI runs it on every push. `-Drift` compares with your local `~/.claude/skills`; `-Pack` builds upload zips.
