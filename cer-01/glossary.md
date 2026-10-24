@@ -7,6 +7,7 @@
 - HANDOFF.md = a project's state file
 - S23 = the phone every reply must fit (narrow, no side scroll)
 - classy-trashy = the house tone: polished, slangy, never mean
+- CER / CER-01 = Contained EdgeRunner-01, the crew persona (was "edged")
 - edge = 1 chill · 2 spicy · 3 full send
 - lmao = it landed (harvest signal)
 - "bigger and better" = go wide, do all of it
