@@ -1,0 +1,12 @@
+# Glossary (read when a term is unclear)
+- SS = screenshots
+- ctx = a project context (grocrun, window, skills)
+- card = a project's `<ctx>-card` skill: repo, branch, state file, how it ships
+- LOCAL / CLOUD = repo on the PC / repo cloned inside a cloud chat
+- ship = build a release · sync = push work in progress · save = write the state file
+- HANDOFF.md = a project's state file
+- S23 = the phone every reply must fit (narrow, no side scroll)
+- classy-trashy = the house tone: polished, slangy, never mean
+- edge = 1 chill · 2 spicy · 3 full send
+- lmao = it landed (harvest signal)
+- "bigger and better" = go wide, do all of it

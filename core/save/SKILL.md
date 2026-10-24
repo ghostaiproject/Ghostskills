@@ -11,3 +11,4 @@ Ctx = the one loaded in this chat (no ask). None loaded and no arg → the load 
    No repo: rewrite memory /areas/<ctx>.md instead (str_replace/write, keep [stated] lines).
 5. CLOUD + repo: SendUserFile the state file (attach); update the latest-status line in memory /areas/<ctx>.md if it exists. LOCAL: skip if tools missing.
 6. Reply: banner "<ctx> saved"; what changed, size before/after, NOT verified. Long chat → "new chat + /load <ctx>".
+7. Edged: this chat had a laughed-at line, new term, gotcha, firm take or running joke? No → skip silently, read nothing. Yes → edged skill, HARVEST.md.
