@@ -52,5 +52,12 @@ A `<ctx>-card` holds a project's number, repo, branch, state file, extras and ho
 | [remote-view](personal/ghost/remote-view/SKILL.md) | (auto) / "remote view" | Low-token PC work: text-first, one screenshot at the end |
 | [ceig](personal/ghost/ceig/SKILL.md) | `/ceig <idea>` (or auto) | Chrome Extension Image Generation: non-AI-looking images via Gemini in Chrome → download, upscale, wallpaper |
 
+## wiki plugin (modelled on claude-obsidian)
+Installable as a Claude Code plugin (`.claude-plugin/`): `/plugin marketplace add <this repo>` → `/plugin install ghostskills`. Knowledge lives in a **separate vault** (never this repo); skills load only when their trigger fires.
+- Skills ([skills/](skills)): `wiki` (setup + routing), `wiki-ingest`, `wiki-query` (read-only), `wiki-save` (only when asked), `wiki-lint`. Agents ([agents/](agents)): `wiki-ingest`, `wiki-lint`, `verifier`, all read-only.
+- Core ([scripts/ghostskills.py](scripts/ghostskills.py), stdlib Python): `init` (dry-run, then `--apply` with the plan hash), `inspect`/`apply`/`recover` (one reviewed transaction: SHA-256 preconditions, path containment, journal + rollback, idempotent ids), `lint` (dead/ambiguous links, orphans, frontmatter, empty sections, stale index), `search` (BM25), `hook`.
+- Token rules: query budgets (12/48/128 KB), `hot.md` ≤500 words, SessionStart context is off unless `GHOSTSKILLS_SESSION_CONTEXT=1`, bundle format lives in `skills/wiki/TX.md` and is read only before a write.
+- Test: `python -m unittest discover tests`.
+
 ## Keeping it healthy
 `scripts/check.ps1` lints every skill (name = folder, `<ctx>-` prefix, card numbers, size, no project repos in core); CI runs it on every push. `-Drift` compares with your local `~/.claude/skills`; `-Pack` builds upload zips.
