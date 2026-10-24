@@ -42,6 +42,8 @@ A `<ctx>-card` holds a project's number, repo, branch, state file, extras and ho
 | Skill | Does |
 |---|---|
 | [alexa-console-edit](tools/alexa-console-edit/SKILL.md) | Edit + build an Alexa skill's model in the developer console via Chrome, script-first |
+| [ghoststyle](tools/ghoststyle/SKILL.md) | Ghost chat-reply style: narrow phone-fit boxes, casual tone, recap, next-step question |
+| [ghostfiles](tools/ghostfiles/SKILL.md) | Ghost file/visual style: flat, clean, phone-fit images (1080x2340), neutral example names |
 
 ## personal
 | Skill | Command | Does |
