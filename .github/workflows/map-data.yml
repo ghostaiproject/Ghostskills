@@ -37,6 +37,6 @@ jobs:
           cd "$GHOST_SITE"
           git init -q -b map-data
           git add data.json
-          git -c user.name=github-actions -c user.email=github-actions@users.noreply.github.com \n            commit -q -m "map data $new from main@${GITHUB_SHA::7}"
+          git -c user.name=github-actions -c user.email=github-actions@users.noreply.github.com commit -q -m "map data $new from main@${GITHUB_SHA::7}"
           git push -q -f "https://x-access-token:$TOKEN@github.com/$GITHUB_REPOSITORY.git" map-data
           echo "published $new"
