@@ -7,7 +7,7 @@ description: Use when the user sends /crew, or a task needs an image/wallpaper/d
 
 ## Route (keywords; nothing matches → no crew, 0 cost)
 - image · picture · logo · mockup · draw · render → `crew gemini "<scene>" [--fmt 16:9|1:1|9:16] [--style film|anime|gouache|ink]` (ceig rules, art + size check, ≤3 reprompts; UI/mockup/icon scenes get a flat look unless `--style` is set)
-- calc · convert · sum · clean data → `crew calc "<expr>"` · `"convert 375 px to pt"` · `"sum 1,2,3"` · `"clean <csv|tsv|txt>"` · Python only via `--code "<python>"` (temp dir, no secrets in env, 30 s cap; still runs as the user)
+- calc · convert · sum · clean data → `crew calc "<expr>"` · `"convert 375 px to pt"` · `"sum 1,2,3"` · `"clean <csv|tsv|txt>"` · Python only via `--code "<python>"` (temp dir, no secrets in env, 30 s cap; still runs as the user and keeps network access)
 - opinion · second opinion → `crew opinion "<q>"` (ChatGPT; Gemini takes over if it is down; `--both` = both) · `crew gem "<q>"` = Gemini text only
 - Several groups → one call each, own sub-prompt. Unsure → `crew route "<request>"`.
 
