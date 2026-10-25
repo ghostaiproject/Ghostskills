@@ -10,7 +10,7 @@ irm https://raw.githubusercontent.com/ghostaiproject/Ghostskills/main/scripts/in
 → clones to `~/Ghostskills`, links core + cer-01 + tools + your projects into `~/.claude/skills` (old copies backed up), adds a SessionStart hook so every Claude session pulls main and links new skills. Edits you make land in the repo → `/sync` pushes them (no push rights → ask for a collaborator invite, or PR from a fork). Re-run with other `-Projects` any time.
 
 Install on claude.ai: everyone uploads **core**, then only the **project** folders they work on. Personal folders are one person's own; skip them unless you want them. `tools` = generic helpers, add the ones you need.
-Upload files: `scripts/check.ps1 -Pack` (Windows: `powershell -ExecutionPolicy Bypass -File scriptseck.ps1 -Pack`) → one zip per skill in `dist/`.
+Token cost per skill: `scripts/check.ps1 -Tokens` (fails if skill descriptions exceed ~3000 tokens/chat). Upload files: `scripts/check.ps1 -Pack` (Windows: `powershell -ExecutionPolicy Bypass -File scripts\check.ps1 -Pack`) → one zip per skill in `dist/`.
 
 ## Commands to remember
 `/load` → numbered menu of your projects (+ memory contexts) → reply with the number.
@@ -63,6 +63,13 @@ A `<ctx>-card` holds a project's number, repo, branch, state file, extras and ho
 | [crew](personal/ghost/crew/SKILL.md) | `/crew` (or auto) | Free second brains before Claude answers: Gemini images + text, local Python calc, ChatGPT opinion (Gemini fallback). One command (`crew.py`), ≤10 lines back, cached, no API keys. `/crew test` = stress suite. Setup: `pip install playwright` → `python -m playwright install chromium` |
 | [webd](personal/ghost/webd/SKILL.md) | (auto) | Web design decision order + defaults (tokens, type, a11y, perf, review) and a simple mode for non-tech users |
 | [switch](personal/ghost/switch/SKILL.md) | `/switch [session]` | Hand the work to a fresh PC Claude Code session with a short brief (fewer tokens), Remote Control on |
+
+## wiki plugin (modelled on claude-obsidian)
+Installable as a Claude Code plugin (`.claude-plugin/`): `/plugin marketplace add <this repo>` → `/plugin install ghostskills`. Knowledge lives in a **separate vault** (never this repo); skills load only when their trigger fires.
+- Skills ([skills/](skills)): `wiki` (setup + routing), `wiki-ingest`, `wiki-query` (read-only), `wiki-save` (only when asked), `wiki-lint`. Agents ([agents/](agents)): `wiki-ingest`, `wiki-lint`, `verifier`, all read-only.
+- Core ([scripts/ghostskills.py](scripts/ghostskills.py), stdlib Python): `init` (dry-run, then `--apply` with the plan hash), `inspect`/`apply`/`recover` (one reviewed transaction: SHA-256 preconditions, path containment, journal + rollback, idempotent ids), `lint` (dead/ambiguous links, orphans, frontmatter, empty sections, stale index), `search` (BM25), `hook`.
+- Token rules: query budgets (12/48/128 KB), `hot.md` ≤500 words, SessionStart context is off unless `GHOSTSKILLS_SESSION_CONTEXT=1`, bundle format lives in `skills/wiki/TX.md` and is read only before a write.
+- Test: `python -m unittest discover tests`.
 
 ## Keeping it healthy
 `scripts/check.ps1` lints every skill (name = folder, `<ctx>-` prefix, card numbers, size, no project repos in core); CI runs it on every push. `-Drift` compares with your local `~/.claude/skills`; `-Pack` builds upload zips.

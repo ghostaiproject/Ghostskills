@@ -1,5 +1,5 @@
-# Lint every skill against CONVENTIONS.md. -Pack: zip each skill into dist/ for claude.ai upload. -Drift: compare with ~/.claude/skills.
-param([switch]$Pack, [switch]$Drift)
+# Lint every skill against CONVENTIONS.md (+ secrets, token cost). -Tokens: per-skill token table. -Pack: zip each skill into dist/ for claude.ai upload. -Drift: compare with ~/.claude/skills.
+param([switch]$Pack, [switch]$Drift, [switch]$Tokens)
 $root = Split-Path $PSScriptRoot -Parent
 $script:fails = 0
 function Fail($m) { Write-Output "FAIL $m"; $script:fails++ }
@@ -9,6 +9,8 @@ $skills = Get-ChildItem $root -Recurse -Filter SKILL.md | Where-Object { $_.Full
 $repos = Get-ChildItem (Join-Path $root 'projects') -Recurse -Filter SKILL.md | ForEach-Object {
     if ((Get-Content $_.FullName -Raw) -match 'repo ([\w.-]+/[\w.-]+)') { $Matches[1] } } | Sort-Object -Unique
 $nums = @{}
+$rows = @()
+$tok = { param($n) [math]::Ceiling($n / 4) }  # rough: ~4 chars per token
 
 foreach ($f in $skills) {
     $dir = $f.Directory.Name
@@ -22,6 +24,7 @@ foreach ($f in $skills) {
     if (-not $desc) { Fail "${rel}: no one-line description" }
     elseif ($desc.Length -gt 300) { Warn "${rel}: description is $($desc.Length) chars" }
     $kb = [math]::Round($f.Length / 1KB, 1)
+    $rows += [pscustomobject]@{ Skill = $rel; Desc = (& $tok $desc.Length); Body = (& $tok $text.Length) }
     if ($kb -gt 5) { Fail "${rel}: $kb KB > 5 KB cap" } elseif ($kb -gt 2) { Warn "${rel}: $kb KB > 2 KB target" }
 
     $top, $ctx = ($rel -split '/')[0, 1]
@@ -50,9 +53,25 @@ if (Test-Path $cer) {
         if ($kb -gt $cap) { Fail "${rel}: $kb KB > $cap KB cer-01 cap" }
         $text = Get-Content $_.FullName -Raw
         if ($text -match '[\w.+-]+@[\w-]+\.[a-z]{2,}') { Fail "${rel}: looks like an email ($($Matches[0])); cer-01 is public" }
-        if ($text -match '(?<!\d)(\+?\d{1,3}[ .-]?)?\(?\d{3}\)?[ .-]?\d{3}[ .-]?\d{4}(?!\d)') { Fail "${rel}: looks like a phone number; cer-01 is public" }
+        if ($text -match '(?<![\w.-])(\+\d{1,3}[ .-]?)?\(?\d{3}\)?[ .-]\d{3}[ .-]\d{4}(?![\w-])' -or $text -match '(?<!\w)\+\d{9,15}(?!\w)') { Fail "${rel}: looks like a phone number; cer-01 is public" }
     }
 }
+# Secrets/emails anywhere in the (public) repo, not just cer-01/.
+$secretRx = 'ghp_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{20,}|sk-[A-Za-z0-9_-]{20,}|AKIA[0-9A-Z]{16}|xox[baprs]-[A-Za-z0-9-]{10,}|-----BEGIN [A-Z ]*PRIVATE KEY-----'
+Get-ChildItem $root -Recurse -File -Include *.md,*.json,*.ps1,*.py,*.yml,*.txt | Where-Object { $_.FullName -notmatch '[\\/](\.git|dist)[\\/]' } | ForEach-Object {
+    $rel = $_.FullName.Substring($root.Length + 1) -replace '\\', '/'
+    $text = Get-Content $_.FullName -Raw
+    if (-not $text) { return }
+    if ($text -match $secretRx) { Fail "${rel}: looks like a secret/token" }
+    if ($rel -ne 'scripts/check.ps1' -and $text -match '[\w.+-]+@[\w-]+\.[a-z]{2,}' -and $Matches[0] -notmatch '@(example\.(com|org)|users\.noreply(\.github\.com)?)$|^noreply@') { Fail "${rel}: looks like an email ($($Matches[0])); repo is public" }
+}
+# Token cost: descriptions are paid in every chat, bodies only when a skill fires.
+$descTotal = ($rows | Measure-Object Desc -Sum).Sum
+$cerLoad = 0
+foreach ($e in @('cer-01/CORE.md')) { $ep = Join-Path $root $e; if (Test-Path $ep) { $cerLoad += (& $tok (Get-Item $ep).Length) } }
+Write-Output "tokens: ~$descTotal always-loaded in skill descriptions, ~$cerLoad for cer-01 CORE, heaviest body ~$(($rows | Measure-Object Body -Maximum).Maximum)"
+if ($descTotal -gt 3000) { Fail "skill descriptions cost ~$descTotal tokens/chat > 3000 budget" }
+if ($Tokens) { $rows | Sort-Object Body -Descending | Format-Table -AutoSize | Out-String -Width 200 | Write-Output }
 Write-Output "$($skills.Count) skills checked, $script:fails failed"
 
 if ($Pack) {
