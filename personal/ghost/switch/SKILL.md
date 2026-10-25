@@ -1,14 +1,10 @@
 ---
 name: switch
-description: Use when the user sends /switch [session]: hand the current work to another Claude Code session on the PC with a short brief (fresh context = fewer tokens), drivable from the phone.
+description: Use when the user sends /switch [notes]: hand the current work to a fresh Claude Code session as one paste-ready brief (fresh context = fewer tokens).
 ---
-# /switch: move work to a fresh PC session
-Text after `/switch` = target session name (optional) + extra notes.
-1. Brief, from your own summary (never paste transcripts, tool dumps or secrets), ≤1.5 KB:
-   `Goal` · `Done` · `State` (repo, branch, key files, servers/URLs) · `Next` (numbered) · `Open` (questions/approvals pending).
-2. Target:
-   - Named → `list_sessions` (or ListAgents); match the name → SendMessage `[switched via /switch]` + brief. Busy or not found → say so, offer a new one.
-   - None named → `start_session`: initiation user_asked, context fresh, same cwd/project (worktree only if this one has one), title = goal in ≤6 words, prompt = brief + "Resume from Next 1; ask before anything in Open."
-3. New session → `set_remote_control` on, so the phone can drive it.
-4. This chat: stop work here (no edits after the brief); `/save` first if a ctx is loaded.
-5. Reply: narrow banner `/SWITCH ✓` + `-> [title](#local_<id>)`, one line: continue there; offer to archive this one (only on yes).
+# /switch: paste-ready brief for a fresh session
+Never start, message or look up sessions (start_session fails under Remote Control); no tool calls. Text after `/switch` = extra notes for the brief.
+1. Brief, from your own summary (never paste transcripts, tool dumps or secrets), ≤1.5 KB, plain text in ONE code block so it copies in one tap:
+   `Goal` · `Done` · `State` (repo, branch, key files, servers/URLs) · `Next` (numbered) · `Open` (questions/approvals pending), last line `Resume from Next 1; ask before anything in Open.`
+2. This chat: stop work here (no edits after the brief); `/save` first if a ctx is loaded.
+3. Reply: narrow banner `/SWITCH` → the code block → one line: open a new session (desktop app or claude.ai/code) and paste it; offer to archive this one (only on yes).
