@@ -23,6 +23,7 @@ CACHE, IMAGES, PROFILES, STATE = HOME / 'cache', HOME / 'images', HOME / 'profil
 MAX_LINES, LINE_CAP, REPLY_CAP = 10, 260, 1000
 TTL = {'gpt': 7 * 86400, 'gem': 7 * 86400}  # opinions go stale; calc and images do not
 OUT = []
+DEADLINE = [None]  # end of the current run_web time budget; every wait inside an attempt stops there too
 NEED_LOGIN = []  # brains that hit a sign-in wall this run (exit 3 at the end; other brains still run)
 
 
@@ -430,9 +431,15 @@ def browser(brain, mode, channel):
             ctx.close()
 
 
+def until(secs):
+    """End time for a wait inside an attempt, capped by the run's time budget."""
+    end = time.time() + secs
+    return min(end, DEADLINE[0]) if DEADLINE[0] else end
+
+
 def first(page, sels, timeout=8000):
     """First visible match among several selectors (sites change; retry other selectors before failing)."""
-    end = time.time() + timeout / 1000
+    end = until(timeout / 1000)
     while time.time() < end:
         for s in sels:
             loc = page.locator(s)
@@ -523,7 +530,11 @@ def run_web(brain, job, budget=420, who=None):
     if (who or brain) in os.environ.get('CREW_FAIL', '').split(','):  # test hook: pretend this brain is down
         raise Skip('forced down by CREW_FAIL')
     with brain_lock(brain):
-        return _run_web(brain, job, budget)
+        DEADLINE[0] = time.time() + budget  # set after the queue wait: the budget is for the run itself
+        try:
+            return _run_web(brain, job, budget)
+        finally:
+            DEADLINE[0] = None
 
 
 def _run_web(brain, job, budget):
@@ -647,7 +658,7 @@ CANVAS_JS = """(sels) => { let r = []; for (const s of sels) { const q = [...doc
 
 
 def wait_reply(page, before, slow, want_image):
-    end, last, stable = time.time() + (210 if slow else 150), None, 0
+    end, last, stable = until(210 if slow else 150), None, 0
     while time.time() < end:
         page.wait_for_timeout(2000)
         info = page.evaluate(IMG_JS, G_RESP)
@@ -676,7 +687,7 @@ def save_image(ctx, page, info, stem):
         resp.locator('img').last.hover()
         btn = first(page, [f'{G_RESP[0]} >> nth=-1 >> {s}' for s in G_DL], 4000)
         if btn:
-            with page.expect_download(timeout=60000) as dl:
+            with page.expect_download(timeout=max(1000, (until(60) - time.time()) * 1000)) as dl:
                 btn.click()
             tmp = HOME / 'dl.tmp'
             dl.value.save_as(tmp)
@@ -779,7 +790,7 @@ C_DISMISS = ['a:has-text("Stay logged out")', 'button:has-text("Stay logged out"
 
 
 def gpt_reply(page, before, slow):
-    end, last, stable = time.time() + (180 if slow else 120), None, 0
+    end, last, stable = until(180 if slow else 120), None, 0
     while time.time() < end:
         page.wait_for_timeout(1500)
         if count(page, C_RESP) <= before:
