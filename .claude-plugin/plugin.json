@@ -1,0 +1,7 @@
+{
+  "name": "ghostskills",
+  "version": "1.0.0",
+  "description": "Token-light team skills plus a local-first, source-cited markdown wiki: reviewed transactions, deterministic lint and search. Vaults stay outside the plugin; writes need an approved plan hash.",
+  "license": "MIT",
+  "keywords": ["skills", "wiki", "memory", "obsidian", "markdown", "token-efficient"]
+}

@@ -1,11 +1,11 @@
-# Neural map data: rebuilds data.json from main (plus the unmerged wiki branch) and publishes it
+# Neural map data: rebuilds data.json from main and publishes it
 # on the map-data branch, which the CER-01 page fetches at load time.
 name: map-data
 on:
   push:
     branches: [main]
   schedule:
-    - cron: '17 */6 * * *'  # picks up pushes to other branches (wiki plugin)
+    - cron: '17 */6 * * *'  # safety net if a push run was skipped
   workflow_dispatch:
 permissions:
   contents: write
@@ -21,7 +21,7 @@ jobs:
           ref: main
           fetch-depth: 20
       - run: |
-          for b in docs/neural-map map-data; do git fetch -q --no-tags --depth=1 origin "+refs/heads/$b:refs/remotes/origin/$b" || true; done
+          for b in map-data; do git fetch -q --no-tags --depth=1 origin "+refs/heads/$b:refs/remotes/origin/$b" || true; done
       - name: build
         env:
           GHOST_SITE: ${{ runner.temp }}/map

@@ -1,0 +1,12 @@
+{
+  "name": "ghostskills",
+  "description": "Ghostskills distribution channel",
+  "owner": { "name": "Ghostskills" },
+  "plugins": [
+    {
+      "name": "ghostskills",
+      "description": "Token-light team skills plus a local-first, source-cited markdown wiki.",
+      "source": "./"
+    }
+  ]
+}

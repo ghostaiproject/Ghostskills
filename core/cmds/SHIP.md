@@ -1,0 +1,2 @@
+# /ship
+Card's ship line (none → one line: "<ctx> has no ship steps yet", stop; it names a skill → invoke that skill, stop). Bump the version where it says, commit + trailers, fetch + rebase, push; workflow given → one `gh run list --repo <repo> --workflow <file> --limit 1 --json databaseId` for the run id. Banner "<ctx> v<ver> building" + last line `Build link: https://github.com/<repo>/actions/runs/<id>`. Don't wait for CI; user says it failed → pull annotations, fix. "local build" (LOCAL only) → card's local build.

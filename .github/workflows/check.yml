@@ -6,3 +6,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: pwsh scripts/check.ps1
+      - run: python -m unittest discover tests
