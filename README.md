@@ -61,6 +61,7 @@ A `<ctx>-card` holds a project's number, repo, branch, state file, extras and ho
 | [remote-view](personal/ghost/remote-view/SKILL.md) | (auto) / "remote view" | Low-token PC work: text-first, one screenshot at the end |
 | [ceig](personal/ghost/ceig/SKILL.md) | `/ceig <idea>` (or auto) | Chrome Extension Image Generation: non-AI-looking images via Gemini in Chrome → download, upscale, wallpaper |
 | [crew](personal/ghost/crew/SKILL.md) | `/crew` (or auto) | Free second brains before Claude answers: Gemini images + text, local Python calc, ChatGPT opinion (Gemini fallback). One command (`crew.py`), ≤10 lines back, cached, no API keys. `/crew test` = stress suite. Setup: `pip install playwright` → `python -m playwright install chromium` |
+| [webd](personal/ghost/webd/SKILL.md) | (auto) | Web design decision order + defaults (tokens, type, a11y, perf, review) and a simple mode for non-tech users |
 
 ## Keeping it healthy
 `scripts/check.ps1` lints every skill (name = folder, `<ctx>-` prefix, card numbers, size, no project repos in core); CI runs it on every push. `-Drift` compares with your local `~/.claude/skills`; `-Pack` builds upload zips.
