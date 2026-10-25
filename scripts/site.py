@@ -56,7 +56,7 @@ def skills():
     py = os.path.join(ROOT, 'scripts', 'ghostskills.py')
     if os.path.exists(py):
         out.append({'id': 'ghostskills.py', 'k': 'wiki', 'dir': 'scripts/ghostskills.py', 'd': '',
-                    'cmd': 'python scripts/ghostskills.py', 'kb': round(os.path.getsize(py) / 1024, 1)})
+                    'cmd': 'python scripts/ghostskills.py', 'kb': round(len(open(py, encoding='utf-8').read().encode()) / 1024, 1)})  # LF size, same on Windows and CI
     if not any(s['k'] == 'wiki' for s in out):
         out += branch_wiki()
     return out
