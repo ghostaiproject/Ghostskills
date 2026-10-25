@@ -1,0 +1,42 @@
+# Neural map data: rebuilds data.json from main (plus the unmerged wiki branch) and publishes it
+# on the map-data branch, which the CER-01 page fetches at load time.
+name: map-data
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '17 */6 * * *'  # picks up pushes to other branches (wiki plugin)
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: map-data
+  cancel-in-progress: true
+jobs:
+  data:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 20
+      - run: git fetch -q --no-tags --depth=1 origin '+refs/heads/docs/neural-map:refs/remotes/origin/docs/neural-map' '+refs/heads/map-data:refs/remotes/origin/map-data' || true
+      - name: build
+        env:
+          GHOST_SITE: ${{ runner.temp }}/map
+        run: python scripts/site.py data
+      - name: publish
+        env:
+          GHOST_SITE: ${{ runner.temp }}/map
+          TOKEN: ${{ github.token }}
+        run: |
+          rev() { python -c 'import json,sys; print(json.load(sys.stdin)["rev"])'; }
+          old=$(git show origin/map-data:data.json 2>/dev/null | rev || true)
+          new=$(rev < "$GHOST_SITE/data.json")
+          if [ "$old" = "$new" ]; then echo "unchanged ($new)"; exit 0; fi
+          cd "$GHOST_SITE"
+          git init -q -b map-data
+          git add data.json
+          git -c user.name=github-actions -c user.email=github-actions@users.noreply.github.com \n            commit -q -m "map data $new from main@${GITHUB_SHA::7}"
+          git push -q -f "https://x-access-token:$TOKEN@github.com/$GITHUB_REPOSITORY.git" map-data
+          echo "published $new"
