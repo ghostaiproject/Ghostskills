@@ -20,7 +20,8 @@ jobs:
         with:
           ref: main
           fetch-depth: 20
-      - run: git fetch -q --no-tags --depth=1 origin '+refs/heads/docs/neural-map:refs/remotes/origin/docs/neural-map' '+refs/heads/map-data:refs/remotes/origin/map-data' || true
+      - run: |
+          for b in docs/neural-map map-data; do git fetch -q --no-tags --depth=1 origin "+refs/heads/$b:refs/remotes/origin/$b" || true; done
       - name: build
         env:
           GHOST_SITE: ${{ runner.temp }}/map
