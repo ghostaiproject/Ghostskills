@@ -1,0 +1,2 @@
+# /sync
+One Bash: `git add -A && git diff --cached --name-only`. Any path like .env*, *.jks, *.keystore, *.pem, *.p12, local.properties → `git reset -q`, list them, ask; stop. Else one Bash: `git commit -q -m "wip: <summary> [skip ci]"` + trailers `&& git fetch -q origin <branch> && git rebase -q origin/<branch> && git push -q origin HEAD:<branch>`. Banner "Synced" + HEAD + file count + "safe to switch device". Never force-push.
