@@ -157,6 +157,15 @@ def unit_checks(tmp):
     check('unchecked image not cached', not (crew.CACHE / 'unchecked.json').exists())
     crew.STATE.write_text('{half', 'utf-8')
     check('corrupt state is ignored', crew.state('gpt') == {})
+    # the time budget also stops waits inside an attempt, not only between attempts
+    crew.DEADLINE[0] = time.time() - 1
+    try:
+        crew.gpt_reply(None, 0, slow=True); stopped = False
+    except RuntimeError:
+        stopped = True
+    finally:
+        crew.DEADLINE[0] = None
+    check('time budget stops a wait inside an attempt', stopped and crew.until(5) > time.time() + 4)
     # a sign-in wall marks exit 3 but never stops the other brains
     crew.OUT.clear()
     real = crew.run_web
