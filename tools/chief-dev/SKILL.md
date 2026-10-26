@@ -26,5 +26,11 @@ Not small → one AskUserQuestion picker, recommended first (grapp for app-archi
 ## 3. Ship it like the rest of the task
 Same checks, build and deploy path as the task (tests, screenshot, PR/merge rules). One batch, not one ship per tweak.
 
-## 4. Report
+## 4. Hunt bugs before the user does
+- Before saying done: run the project's bug-hunt/QA script (pages: every view, PC + phone, every window/tab; errors, overflow, cut text, tap targets).
+- No script yet → write one, wire it into the ship step so a FAIL blocks the push.
+- Prove it works: put a bug you just fixed back in a throwaway copy → it must FAIL.
+- A bug found by eye or by the user → fix it AND add a check for it.
+
+## 5. Report
 One line each: `chief-dev → <what> · <why>`. End with a real next step only if it is NOT small (else just do it).
