@@ -2,7 +2,7 @@
 
   python scripts/site.py data    -> site/data.json from the working tree (skills, branch, recent commits)
   python scripts/site.py build   -> site/out/ (index, fr, setup, setup-fr) from site/page.html + site/parts/ + data.json
-  python scripts/site.py pages   -> build, then push site/out/ to the GitHub Pages repo (PAGES_REPO)
+  python scripts/site.py pages   -> build, bug-hunt (scripts/site_qa.py), then push site/out/ to the GitHub Pages repo (PAGES_REPO)
   python scripts/site.py mark V  -> record data.json's rev as pushed to the artifact db (doc site/data, now at version V)
   python scripts/site.py hook    -> Stop hook: asks Claude to push the data when the repo changed
 
@@ -156,6 +156,8 @@ def build():
 def pages():
     """Push site/out/ to the self-hosted copy (GitHub Pages repo PAGES_REPO, branch main)."""
     build()
+    if '--no-qa' not in sys.argv and subprocess.run([sys.executable, os.path.join(ROOT, 'scripts', 'site_qa.py')]).returncode:
+        sys.exit('site_qa found bugs: fix them, or push anyway with: site.py pages --no-qa')
     out = os.path.join(SITE, 'out')
     run = lambda *a: subprocess.run(['git', '-C', out, *a], check=True)
     if not os.path.isdir(os.path.join(out, '.git')):
