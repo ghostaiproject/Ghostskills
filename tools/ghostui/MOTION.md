@@ -26,4 +26,4 @@ Read from the templates' own interaction files (durations ms, easing names).
 --ease-out:cubic-bezier(.22,1,.36,1);--ease-in:cubic-bezier(.55,0,1,.45);
 --ease-io:cubic-bezier(.65,0,.35,1);--swing:cubic-bezier(.34,1.3,.64,1);
 ```
-Animate transform + opacity only. Honor prefers-reduced-motion → fades only.
+Animate transform + opacity only. First load = content already visible: never start at opacity 0 (renders blank when animations pause); animate only on later swaps. Honor prefers-reduced-motion → fades only.
