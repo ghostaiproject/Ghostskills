@@ -1,29 +1,36 @@
 # Motion (read when a design animates)
-Read from the templates' own interaction files (durations ms, easing names).
+Measured: Justinmind interaction files · Material 3, Carbon, Fluent, Primer, Polaris tokens · Linear, Raycast, Apple, Stripe CSS.
 
-## Timing
-- Micro (press, toggle, color/state change): 100-200, ease-out.
-- Enter (element appears/moves in): 300-400, ease-out (easeOutCirc / easeOutQuad).
-- Exit (element leaves): 200, ease-in (easeInCirc). Exits faster than enters.
-- Panel/drawer/carousel slide: 300, ease-in-out (easeInOutQuad).
-- Sheet/dropdown: slide down 500, swing (soft overshoot) → CSS cubic-bezier(.34,1.3,.64,1) at 300-400.
-- One hero morph per screen (image grows into detail): 700-900, ease-in-out.
-- Fades: 200 quick, 300 standard, 400 for content swaps.
+## Durations (consensus)
+- 50-100 press/hover color · 120 tooltip · 150-175 dialog, menu · 200-250 small move · 300 drawer, carousel, sheet · 400 page/content enter · 500-700 big reveal · 700-900 one hero morph.
+- Exit ≈ 70% of enter. Nothing over 500 except one hero.
 
-## Choreography
-- Swap content: old text slides + fades out (200 in) → image resizes (hero) → new text slides + fades in (400 out). Run hero + text in parallel, offset 50-100.
-- Lists/cards on load: stagger 40-60 per item, max 6 items staggered.
-- Drawer: panel moves 0 ↔ -width, scrim fades 0 ↔ 40% in the same 300.
-- Confirmation popup: scrim fade 300 + card fade/scale .96→1 in 300; dismiss fade 200.
-
-## Gestures (used in weather, onboarding, carousel, flights)
-- Swipe left/right → next/prev page/card; swipe up/down → expand/collapse sheet.
-- Drag + dragend → sliders and draggable sheets snap to nearest stop.
-- Focus in/out on inputs → label + border recolor 150.
-
-## CSS
+## Curves
 ```css
---ease-out:cubic-bezier(.22,1,.36,1);--ease-in:cubic-bezier(.55,0,1,.45);
---ease-io:cubic-bezier(.65,0,.35,1);--swing:cubic-bezier(.34,1.3,.64,1);
+--standard:cubic-bezier(.2,0,0,1);      /* M3 standard: most UI moves */
+--decel:cubic-bezier(.05,.7,.1,1);      /* M3 emphasized decelerate: things entering */
+--accel:cubic-bezier(.3,0,.8,.15);      /* M3 emphasized accelerate: things leaving */
+--out-quart:cubic-bezier(.165,.84,.44,1);/* Stripe/Linear reveals, hovers */
+--out-expo:cubic-bezier(.23,1,.32,1);   /* Raycast fades */
+--swing:cubic-bezier(.34,1.3,.64,1);    /* soft overshoot: sheets, toggles */
 ```
-Animate transform + opacity only. First load = content already visible: never start at opacity 0 (renders blank when animations pause); animate only on later swaps. Honor prefers-reduced-motion → fades only.
+
+## Recipes (real values)
+- Tooltip: opacity 0→1 + scale .9→1, 120ms, ease-out (Linear).
+- Menu/popover: opacity + 2px slide from the trigger side, 150ms (Raycast).
+- Dialog: scale .96→1 + translateY 2% + fade, 175ms; scrim fade 150 (Linear, Raycast).
+- Dialog click-outside when blocking: scale 1→.98→1 in 150ms "bounce" (Linear).
+- Error: shake 0 → -3px → 3px → 0, 300ms (Raycast).
+- Drawer: transform 0 ↔ -width, 300; scrim 0 ↔ 40% same time.
+- Sheet: translateY 100% → 0, 300-380 swing; drag with finger, snap on release.
+- Nav flyout content: 8px slide + fade, old one leaves opposite way (Apple).
+- Content swap: old out 200 accel → new in 400 decel, stagger 40-60/item, max 6.
+- Section reveal on scroll: 24px rise + fade 500-800 out-quart, once; prefer animation-timeline: view() where supported.
+- Press: scale .97 or translateY(2px) 100ms.
+- Ambient loop (marquee, gradient, snow): linear, 20-30s, pause off-screen.
+
+## Gestures
+Swipe left/right → next/prev · swipe up/down → expand/collapse sheet · drag + release → snap · focus → label + border recolor 150.
+
+## Rules
+Animate transform + opacity only. First load = content already visible: never start at opacity 0 (renders blank when animations pause); animate only on later swaps or below the fold. Honor prefers-reduced-motion → fades only.

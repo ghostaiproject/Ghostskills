@@ -3,31 +3,45 @@ name: ghostui
 description: UI rules for designing app screens, sites, dashboards and mockups (identity, layout, type, color, components, motion). Use with ghostfiles for any app/site design work.
 ---
 # GhostUI (app + site design; look → ghostfiles)
-Template specs measured from ~30 Justinmind templates · ghost 2026-11-02. Motion → MOTION.md.
-Templates = clean but generic. Specs alone look bland ("one color, nothing designed" · ghost). Identity first.
+Sources (measured, not guessed) · ghost 2026-11-02: ~30 Justinmind templates · Material 3, Carbon, Fluent, Primer, Polaris, Radix tokens · 33 daisyUI themes · live sites Linear, Stripe, Raycast, Apple, Headspace, Things, Duolingo.
+Read when needed: IDENTITY.md (style recipes) · MOTION.md (timings, keyframes).
 
-## Identity (do first, every design)
-- Mood from the subject's world: place, season, time, material (chalet → winter dusk, snow, warm interior).
-- One signature element only this app would have: dial, floor plan, map, live scene. Make it the hero.
-- Color carries meaning: data maps to color (temp cold→warm), each category gets its own hue (light amber, lock mint, blinds sky). Neutrals stay quiet.
-- Display face with character for names + numbers (Bricolage Grotesque, Fraunces, Syne); calm body face (Manrope, DM Sans). Never one font for all.
-- One ambient touch (snow, glow, grain), drawn visibly at rest.
-- Check: could this screen belong to any other app? Yes → not done.
+## 1. Identity first (every design)
+- Mood from the subject's world: place, season, time, material.
+- Pick a recipe in IDENTITY.md (or blend two). Its knobs = radius, border, depth, type, color temperature.
+- One signature element only this app has (dial, floor plan, keyboard keys, live gradient). Make it the hero.
+- Color carries meaning: data → color (cold→warm), each category its own hue; accent only on primary actions.
+- Display face with character + calm body face. Never one font for everything.
+- One ambient touch (snow, glow, grain, gradient canvas), visible at rest.
+- Test: could this screen belong to another app? Yes → not done.
 
-## System
-- No drop shadows: depth = tinted canvas + cards + 1px borders + colored glows.
-- Accent fills only primary actions; state colors come from the data/category.
-- Scale: 11 · 13 · 16 · 20 · 26-30 · 44; hero numbers 72-120. Body 400, labels 600, titles 600-800. Max 4 sizes per screen.
-- Radius by role: inputs/buttons 8-14 · cards 20-24 · pills full · avatars 50%.
-- 8pt grid; 16px phone gutter; 44px min tap target.
+## 2. Color
+- Never pure grey or pure black. Tint neutrals toward the brand hue (Linear #0F1011, Apple #1D1D1F, Headspace #2D2C2B on #F9F4F2).
+- Dark mode bg L 14-24%, slightly chromatic (hue of brand). Text tinted to theme (warm themes = warm text).
+- Text hierarchy = 3 levels by alpha on one ink: 100% · 72% · 56% (Apple), or 3 tinted greys (Linear).
+- 12-step scale per hue (Radix): 1-2 backgrounds · 3-5 component fills/hover/pressed · 6-8 borders · 9-10 solid · 11-12 text.
+- Palette = base + primary + secondary (analogous or triadic) + bright accent (L~90) for highlights only.
 
-## Patterns
-- Hero number: giant value + tiny label + live state chip.
-- Stat row: 3 small tiles, label on top, bold value below.
-- Device card: icon tile + switch + name + status; on = its own hue fill + glow.
-- Dashboard: icon rail → list → card grid → summary (phone: signature hero → stats → cards).
-- Onboarding: 3-4 steps · illustration · 30px headline · one sentence · one CTA · dots · swipe.
-- Login: greeting 35-38px · 2 labeled fields · full-width pill · text links.
+## 3. Type
+- Sizes (M3 / Radix consensus): 11 · 12 · 14 · 16 · 20 · 24 · 28 · 35 · 45 · 57; hero numbers 72-120.
+- Display tracking negative: -0.01em at 28px → -0.025em at 60px+. Small caps labels +0.08em.
+- Weights: premium/calm = light display 300 (Stripe) or 510-600 (Linear, Apple); playful = 700 everywhere (Duolingo, Headspace).
+- Line height: ~1.1 display, 1.4-1.5 body.
+
+## 4. Shape + depth
+- Radius scale (M3): 4 · 8 · 12 · 16 · 20 · 28 · 48 · full. Nested radius = outer − padding.
+- Radius = personality: 0-4 serious/finance · 8-12 tools · 16-32 friendly · fields 2rem = playful.
+- Depth options (pick one per app): hairline 0.5-1px rgba border + 1px inset white 5% highlight (Linear) · tinted soft shadow rgba(50,50,93,.12) 0 16px 32px (Stripe) · solid offset 0 2-4px darker shade, tactile (Headspace, Duolingo) · layered "physical key" shadows (Raycast).
+- Glass (backdrop blur) only on floating nav/sheets over content.
+
+## 5. Patterns
+- Hero number + tiny label + live state chip.
+- Stat row: 3 tiles, label top, bold value below.
+- Toggle card: icon tile + switch + name + status; on = its hue fill + glow.
+- Phone dashboard: signature hero → stats → cards → primary CTA.
+- Onboarding: 3-4 steps · illustration · 30px headline · 1 sentence · 1 CTA · dots · swipe.
+- Login: greeting 35px · 2 labeled fields · full-width pill · text links.
+- Tactile button: 0 4px 0 darker shade; press → translateY(2px) + shadow 2px, 100ms.
 
 ## Never
-Single-hue screens. Drop shadows. Paragraphs on cards. Content starting invisible. Shipping without rendering it on a phone-size screen first.
+Single-hue screens · pure #000/#808080 · one font for all · paragraphs on cards · content starting invisible · two depth styles mixed · shipping without rendering on a phone-size screen first.
