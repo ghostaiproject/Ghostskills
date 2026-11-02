@@ -19,4 +19,4 @@ Neutral names only: Chalet, Condo, Bureau, Studio, Atelier. Never real people or
 
 ## Before sending
 Render once, check: final size, readable on a phone, nothing cut, no ASCII leftovers.
-Sizes, fonts, palette → SPECS.md.
+Sizes, fonts, palette → SPECS.md. App/site screens → also ghostui.
