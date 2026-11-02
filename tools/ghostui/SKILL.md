@@ -3,8 +3,8 @@ name: ghostui
 description: UI rules for designing app screens, sites, dashboards and mockups (identity, layout, type, color, components, motion). Use with ghostfiles for any app/site design work.
 ---
 # GhostUI (app + site design; look → ghostfiles)
-Sources (measured, not guessed) · ghost 2026-11-02: ~30 Justinmind templates · Material 3, Carbon, Fluent, Primer, Polaris, Radix tokens · 33 daisyUI themes · live sites Linear, Stripe, Raycast, Apple, Headspace, Things, Duolingo.
-Read when needed: IDENTITY.md (style recipes) · MOTION.md (timings, keyframes) · LAYOUT.md (phone/tablet/desktop).
+Sources (measured, not guessed) · ghost 2026-11-02: ~30 Justinmind templates · Material 3, Carbon, Fluent, Primer, Polaris, Radix tokens · 33 daisyUI themes · live sites Linear, Stripe, Raycast, Apple, Headspace, Things, Duolingo · land-book.com (12k sites, 90 top-liked analysed).
+Read when needed: IDENTITY.md (style recipes) · MOTION.md (timings, keyframes) · LAYOUT.md (phone/tablet/desktop) · LANDING.md (websites: sections, hero copy, site trends).
 
 ## 1. Identity first (every design)
 - Mood from the subject's world: place, season, time, material.
@@ -16,6 +16,7 @@ Read when needed: IDENTITY.md (style recipes) · MOTION.md (timings, keyframes) 
 - Test: could this screen belong to another app? Yes → not done.
 
 ## 2. Color
+- Never pure grey, black or white (0 of 90 top sites use #000/#FFF). Off-white tinted warm, ink colored (teal, plum, forest).
 - Never pure grey or pure black. Tint neutrals toward the brand hue (Linear #0F1011, Apple #1D1D1F, Headspace #2D2C2B on #F9F4F2).
 - Dark mode bg L 14-24%, slightly chromatic (hue of brand). Text tinted to theme (warm themes = warm text).
 - Text hierarchy = 3 levels by alpha on one ink: 100% · 72% · 56% (Apple), or 3 tinted greys (Linear).
