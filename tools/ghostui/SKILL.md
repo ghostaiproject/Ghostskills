@@ -40,7 +40,7 @@ Read when needed: IDENTITY.md (style recipes) · LIFE.md (always: AI-look tells,
 - One build, 3 layouts (LAYOUT.md): phone ≤719 one column · tablet 720-1099 two columns · desktop ≥1100 rail + 3-zone grid, max ~1480.
 - Desktop shows MORE, not bigger: side nav, extra panels (activity feed, charts, forecast, status chips). Phone keeps the essentials + one CTA.
 - No empty canvas: every column ends near the same line; fill gaps with real content, never stretch cards. Tall hero beside 2 stacked panels → pin a stat row to its bottom (margin-top:auto).
-- Check: shots.py at 390 · 820 · 1440 → fix every spill line, then look at the PNGs for empty areas (LIFE.md review loop).
+- Check: shots.py at 390 · 820 · 1440 → fix every spill/overlap line, then look at the PNGs for empty areas (LIFE.md review loop).
 
 ## 6. Patterns
 - Hero number + tiny label + live state chip.

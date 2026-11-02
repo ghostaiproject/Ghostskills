@@ -24,8 +24,8 @@ Rules make a screen correct. These make it feel made by a person, and catch what
 - Vary panels: hero gets a different treatment (glow, image, scene) than the cards around it.
 
 ## Review loop (every build)
-1. shots.py at 390/820/1440 → read the overflow lines, then LOOK at the PNGs (scrollWidth ok ≠ nothing spills).
-2. Check: spills, wrapped numbers, dead zones beside tall panels, phone CTA covering content, one-column phone cards wasting width.
+1. shots.py at 390/820/1440 → fix every spill and overlap line, then LOOK at the PNGs (checks pass ≠ it looks right).
+2. Check: wrapped numbers or units, text laid over a scene (on phone move titles/captions out of the scene, into the flow), dead zones under a shorter column (stretch it, let its last block grow), one-column phone cards wasting width.
 3. One fix pass → publish. More polish only when asked.
 4. Feedback "looks AI / lifeless / generic" → run the tells list, fix the top 2-3 causes, keep layout that works. Don't just add effects.
 
