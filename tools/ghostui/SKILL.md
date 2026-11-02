@@ -1,10 +1,10 @@
 ---
 name: ghostui
-description: UI rules for designing app screens, sites, dashboards and mockups (identity, layout, type, color, components, motion). Use with ghostfiles for any app/site design work.
+description: The user's own design skill ("design skills", "ghostui") for app screens, sites, dashboards, mockups: identity, layout, type, color, motion, life. Use it over the built-in Design canvas; with ghostfiles.
 ---
 # GhostUI (app + site design; look → ghostfiles)
 Sources (measured, not guessed) · ghost 2026-11-02: ~30 Justinmind templates · Material 3, Carbon, Fluent, Primer, Polaris, Radix tokens · 33 daisyUI themes · live sites Linear, Stripe, Raycast, Apple, Headspace, Things, Duolingo · land-book.com (12k sites, 90 top-liked analysed).
-Read when needed: IDENTITY.md (style recipes) · MOTION.md (timings, keyframes) · LAYOUT.md (phone/tablet/desktop) · LANDING.md (websites: sections, hero copy, site trends).
+Read when needed: IDENTITY.md (style recipes) · LIFE.md (always: cast, ambient motion, reactions, voice) · MOTION.md (timings, keyframes) · LAYOUT.md (phone/tablet/desktop) · LANDING.md (websites: sections, hero copy, site trends).
 
 ## 1. Identity first (every design)
 - Mood from the subject's world: place, season, time, material.
@@ -14,6 +14,7 @@ Read when needed: IDENTITY.md (style recipes) · MOTION.md (timings, keyframes) 
 - Display face with character + calm body face. Never one font for everything.
 - One ambient touch (snow, glow, grain, gradient canvas), visible at rest.
 - Test: could this screen belong to another app? Yes → not done.
+- Test 2: does it feel alive (characters, things moving at rest, reacts to touch)? No → LIFE.md. Rules make it correct, not alive.
 
 ## 2. Color
 - Never pure grey, black or white (0 of 90 top sites use #000/#FFF). Off-white tinted warm, ink colored (teal, plum, forest).
@@ -38,17 +39,17 @@ Read when needed: IDENTITY.md (style recipes) · MOTION.md (timings, keyframes) 
 ## 5. Every screen ships phone + desktop
 - One build, 3 layouts (LAYOUT.md): phone ≤719 one column · tablet 720-1099 two columns · desktop ≥1100 rail + 3-zone grid, max ~1480.
 - Desktop shows MORE, not bigger: side nav, extra panels (activity feed, charts, forecast, status chips). Phone keeps the essentials + one CTA.
-- No empty canvas: every column ends near the same line; fill gaps with real content, never stretch cards.
+- No empty canvas: every column ends near the same line; fill gaps with real content, never stretch cards. Tall hero beside 2 stacked panels → pin a stat row to its bottom (margin-top:auto).
 - Check: render 390 · 820 · 1440 (shots.py), no sideways scroll, no big empty areas.
 
 ## 6. Patterns
 - Hero number + tiny label + live state chip.
 - Stat row: 3 tiles, label top, bold value below.
-- Toggle card: icon tile + switch + name + status; on = its hue fill + glow.
+- Toggle card: row 1 icon tile + switch (justify end), row 2 name + status; min-width:0. One-row icon|text|switch overflows in 2-col grids on phone. On = its hue fill + glow.
 - Phone dashboard: signature hero → stats → cards → primary CTA.
 - Onboarding: 3-4 steps · illustration · 30px headline · 1 sentence · 1 CTA · dots · swipe.
 - Login: greeting 35px · 2 labeled fields · full-width pill · text links.
 - Tactile button: 0 4px 0 darker shade; press → translateY(2px) + shadow 2px, 100ms.
 
 ## Never
-Single-hue screens · pure #000/#808080 · one font for all · paragraphs on cards · content starting invisible · two depth styles mixed · a phone column stranded in the middle of a desktop · shipping without rendering 390/820/1440 first.
+Single-hue screens · same card style on every block · static until clicked · pure #000/#808080 · one font for all · paragraphs on cards · content starting invisible · two depth styles mixed · a phone column stranded in the middle of a desktop · shipping without rendering 390/820/1440 first.
