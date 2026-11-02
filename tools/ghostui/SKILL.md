@@ -1,30 +1,33 @@
 ---
 name: ghostui
-description: UI rules for designing app screens, sites, dashboards and mockups (layout, type, color, components, motion). Use with ghostfiles for any app/site design work.
+description: UI rules for designing app screens, sites, dashboards and mockups (identity, layout, type, color, components, motion). Use with ghostfiles for any app/site design work.
 ---
 # GhostUI (app + site design; look → ghostfiles)
-Measured from ~30 Justinmind templates (styles + interaction files) · ghost 2026-11-02. Motion details → MOTION.md.
+Template specs measured from ~30 Justinmind templates · ghost 2026-11-02. Motion → MOTION.md.
+Templates = clean but generic. Specs alone look bland ("one color, nothing designed" · ghost). Identity first.
+
+## Identity (do first, every design)
+- Mood from the subject's world: place, season, time, material (chalet → winter dusk, snow, warm interior).
+- One signature element only this app would have: dial, floor plan, map, live scene. Make it the hero.
+- Color carries meaning: data maps to color (temp cold→warm), each category gets its own hue (light amber, lock mint, blinds sky). Neutrals stay quiet.
+- Display face with character for names + numbers (Bricolage Grotesque, Fraunces, Syne); calm body face (Manrope, DM Sans). Never one font for all.
+- One ambient touch (snow, glow, grain), drawn visibly at rest.
+- Check: could this screen belong to any other app? Yes → not done.
 
 ## System
-- Flat: zero shadows in every template → depth = tinted canvas + white cards + 1px borders.
-- Canvas: light #F1F2F7 or #EAEBF6 · dark navy #24365D / #0F1562 with white@10% cards.
-- One brand accent per app (seen: #4262FF #5665E3 #6555FF #3A29E8 #004FFB #FD3593) + its 15% tint for chips/selected rows (#DEE3FF, #EAEBF6).
-- Chart palette only in charts: #6CC986 #5665E3 #F0C774 #D86A65 #E4A44C.
-- Type: one sans (Poppins, Montserrat, Roboto, Lato); serif (Lora, Georgia) only for display headlines.
-- Scale: 11 · 13 · 16 · 20 · 26-30 · 38-45; hero numbers 100-120. Body 400, labels 500, titles 600-700. Max 4 sizes per screen.
-- Radius: inputs/buttons 5-8 · cards 10-15 · big panels 20 · pills = height/2 (~23) · avatars 50%.
+- No drop shadows: depth = tinted canvas + cards + 1px borders + colored glows.
+- Accent fills only primary actions; state colors come from the data/category.
+- Scale: 11 · 13 · 16 · 20 · 26-30 · 44; hero numbers 72-120. Body 400, labels 600, titles 600-800. Max 4 sizes per screen.
+- Radius by role: inputs/buttons 8-14 · cards 20-24 · pills full · avatars 50%.
 - 8pt grid; 16px phone gutter; 44px min tap target.
 
 ## Patterns
-- Hero number: giant value + tiny label (temp, total, balance).
-- Stat grid 2x2: label on top, bold value below.
-- List row: name left · values right · thin divider.
-- Card: title · big number · mini chart. Nothing else.
-- Device/toggle card: icon + name + status; active = accent fill, inactive = tint.
-- Dashboard: icon rail → section list → card grid → summary panel (phone: tabs + stacked cards).
-- Onboarding: 3-4 steps · one illustration · 30px headline · one sentence · one CTA · dots · swipe.
-- Login: greeting headline 35-38px · 2 labeled fields · full-width pill button · text links.
-- Button set: primary fill · secondary tint · ghost outline · icon-only circle.
+- Hero number: giant value + tiny label + live state chip.
+- Stat row: 3 small tiles, label on top, bold value below.
+- Device card: icon tile + switch + name + status; on = its own hue fill + glow.
+- Dashboard: icon rail → list → card grid → summary (phone: signature hero → stats → cards).
+- Onboarding: 3-4 steps · illustration · 30px headline · one sentence · one CTA · dots · swipe.
+- Login: greeting 35-38px · 2 labeled fields · full-width pill · text links.
 
 ## Never
-Shadows. Two accents. Paragraphs on cards. Over 4 font sizes per screen. Motion over 500ms (except one hero).
+Single-hue screens. Drop shadows. Paragraphs on cards. Content starting invisible. Shipping without rendering it on a phone-size screen first.
