@@ -4,7 +4,7 @@ description: UI rules for designing app screens, sites, dashboards and mockups (
 ---
 # GhostUI (app + site design; look → ghostfiles)
 Sources (measured, not guessed) · ghost 2026-11-02: ~30 Justinmind templates · Material 3, Carbon, Fluent, Primer, Polaris, Radix tokens · 33 daisyUI themes · live sites Linear, Stripe, Raycast, Apple, Headspace, Things, Duolingo.
-Read when needed: IDENTITY.md (style recipes) · MOTION.md (timings, keyframes).
+Read when needed: IDENTITY.md (style recipes) · MOTION.md (timings, keyframes) · LAYOUT.md (phone/tablet/desktop).
 
 ## 1. Identity first (every design)
 - Mood from the subject's world: place, season, time, material.
@@ -34,7 +34,13 @@ Read when needed: IDENTITY.md (style recipes) · MOTION.md (timings, keyframes).
 - Depth options (pick one per app): hairline 0.5-1px rgba border + 1px inset white 5% highlight (Linear) · tinted soft shadow rgba(50,50,93,.12) 0 16px 32px (Stripe) · solid offset 0 2-4px darker shade, tactile (Headspace, Duolingo) · layered "physical key" shadows (Raycast).
 - Glass (backdrop blur) only on floating nav/sheets over content.
 
-## 5. Patterns
+## 5. Every screen ships phone + desktop
+- One build, 3 layouts (LAYOUT.md): phone ≤719 one column · tablet 720-1099 two columns · desktop ≥1100 rail + 3-zone grid, max ~1480.
+- Desktop shows MORE, not bigger: side nav, extra panels (activity feed, charts, forecast, status chips). Phone keeps the essentials + one CTA.
+- No empty canvas: every column ends near the same line; fill gaps with real content, never stretch cards.
+- Check: render 390 · 820 · 1440 (shots.py), no sideways scroll, no big empty areas.
+
+## 6. Patterns
 - Hero number + tiny label + live state chip.
 - Stat row: 3 tiles, label top, bold value below.
 - Toggle card: icon tile + switch + name + status; on = its hue fill + glow.
@@ -44,4 +50,4 @@ Read when needed: IDENTITY.md (style recipes) · MOTION.md (timings, keyframes).
 - Tactile button: 0 4px 0 darker shade; press → translateY(2px) + shadow 2px, 100ms.
 
 ## Never
-Single-hue screens · pure #000/#808080 · one font for all · paragraphs on cards · content starting invisible · two depth styles mixed · shipping without rendering on a phone-size screen first.
+Single-hue screens · pure #000/#808080 · one font for all · paragraphs on cards · content starting invisible · two depth styles mixed · a phone column stranded in the middle of a desktop · shipping without rendering 390/820/1440 first.
