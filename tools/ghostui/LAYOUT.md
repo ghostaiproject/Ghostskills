@@ -24,4 +24,4 @@ Seen on Linear, Apple, Stripe, Raycast + Chalet fix (ghost: "desktop has a lot o
 - Every grid child min-width:0; wide charts get their own overflow-x:auto.
 
 ## Check before sending
-`python3 shots.py page.html` → 390 / 820 / 1440 screenshots + scrollWidth. Look for: empty zones, sideways scroll, wrapped stat numbers, orphan cards.
+`python3 shots.py page.html` → 390 / 820 / 1440 screenshots, scrollWidth + elements spilling out of their box. Look for: empty zones, sideways scroll, wrapped stat numbers, orphan cards.

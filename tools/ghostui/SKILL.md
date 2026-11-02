@@ -4,7 +4,7 @@ description: The user's own design skill ("design skills", "ghostui") for app sc
 ---
 # GhostUI (app + site design; look → ghostfiles)
 Sources (measured, not guessed) · ghost 2026-11-02: ~30 Justinmind templates · Material 3, Carbon, Fluent, Primer, Polaris, Radix tokens · 33 daisyUI themes · live sites Linear, Stripe, Raycast, Apple, Headspace, Things, Duolingo · land-book.com (12k sites, 90 top-liked analysed).
-Read when needed: IDENTITY.md (style recipes) · LIFE.md (always: cast, ambient motion, reactions, voice) · MOTION.md (timings, keyframes) · LAYOUT.md (phone/tablet/desktop) · LANDING.md (websites: sections, hero copy, site trends).
+Read when needed: IDENTITY.md (style recipes) · LIFE.md (always: AI-look tells, make it alive, review loop) · MOTION.md (timings, keyframes) · LAYOUT.md (phone/tablet/desktop) · LANDING.md (websites: sections, hero copy, site trends).
 
 ## 1. Identity first (every design)
 - Mood from the subject's world: place, season, time, material.
@@ -40,7 +40,7 @@ Read when needed: IDENTITY.md (style recipes) · LIFE.md (always: cast, ambient 
 - One build, 3 layouts (LAYOUT.md): phone ≤719 one column · tablet 720-1099 two columns · desktop ≥1100 rail + 3-zone grid, max ~1480.
 - Desktop shows MORE, not bigger: side nav, extra panels (activity feed, charts, forecast, status chips). Phone keeps the essentials + one CTA.
 - No empty canvas: every column ends near the same line; fill gaps with real content, never stretch cards. Tall hero beside 2 stacked panels → pin a stat row to its bottom (margin-top:auto).
-- Check: render 390 · 820 · 1440 (shots.py), no sideways scroll, no big empty areas.
+- Check: shots.py at 390 · 820 · 1440 → fix every spill line, then look at the PNGs for empty areas (LIFE.md review loop).
 
 ## 6. Patterns
 - Hero number + tiny label + live state chip.
