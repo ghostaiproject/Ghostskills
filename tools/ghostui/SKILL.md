@@ -17,7 +17,7 @@ Read when needed: IDENTITY.md (style recipes) · MOTION.md (timings, keyframes) 
 
 ## 2. Color
 - Never pure grey, black or white (0 of 90 top sites use #000/#FFF). Off-white tinted warm, ink colored (teal, plum, forest).
-- Never pure grey or pure black. Tint neutrals toward the brand hue (Linear #0F1011, Apple #1D1D1F, Headspace #2D2C2B on #F9F4F2).
+- Tint neutrals toward the brand hue (Linear #0F1011, Apple #1D1D1F, Headspace #2D2C2B on #F9F4F2).
 - Dark mode bg L 14-24%, slightly chromatic (hue of brand). Text tinted to theme (warm themes = warm text).
 - Text hierarchy = 3 levels by alpha on one ink: 100% · 72% · 56% (Apple), or 3 tinted greys (Linear).
 - 12-step scale per hue (Radix): 1-2 backgrounds · 3-5 component fills/hover/pressed · 6-8 borders · 9-10 solid · 11-12 text.
