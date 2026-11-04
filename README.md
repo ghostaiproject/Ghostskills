@@ -52,8 +52,7 @@ A `<ctx>-card` holds a project's number, repo, branch, state file, extras and ho
 | [ghoststyle](tools/ghoststyle/SKILL.md) | Ghost chat-reply style: narrow phone-fit boxes, casual tone, recap, next-step question |
 | [ghostfiles](tools/ghostfiles/SKILL.md) | Ghost file/visual style: flat, clean, phone-fit images (1080x2340), neutral example names |
 | [ghostui](tools/ghostui/SKILL.md) | App/site design: identity recipes, color/type/shape rules, motion timings, life + review loop (AI-look tells, spill check) — measured from templates, 6 design systems, 33 themes, 7 live sites |
-| [grapp](tools/grapp/SKILL.md) | Super senior dev for app-building decisions: decides defaultable choices, names how each is verified, asks only for money/secrets/irreversible/brand |
-| [chief-dev](tools/chief-dev/SKILL.md) | Chief dev for small follow-ups: decides decision-light tweaks (polish, sizing, matching sibling views) and does them instead of asking; real choices still go to a picker. |
+| [chief-dev](tools/chief-dev/SKILL.md) | Chief dev for small follow-ups: decides decision-light tweaks (polish, sizing, matching sibling views) and does them instead of asking; real choices still go to a picker; also app-architecture picks (merged from grapp). |
 
 ## personal
 | Skill | Command | Does |
