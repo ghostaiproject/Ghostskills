@@ -7,6 +7,7 @@ State: HANDOFF.md (repo root). Code work: Read DEV.md + LESSONS.md + CODEMAP.md 
 
 ## Mode (set by /load grocrun)
 LOCAL = repo folder on the PC; CLOUD = /home/claude/grocerierun. GitHub main = source of truth: fetch + rebase before work, push after.
+First step every chat (before HANDOFF/version reads): `git switch main && git pull --rebase`. The PC copy can sit on an old branch (2026-11-04: demo-mode-5.51.0 showed 5.51 while main was 5.53). Uncommitted work or not on main → say the branch and ask before switching.
 
 ## Tokens
 1. Never switch model mid-chat. Default Sonnet; Opus = new chat + /load grocrun. "Extra" effort only for hard bugs.
