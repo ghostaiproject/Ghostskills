@@ -252,6 +252,15 @@
    "tok": "personal",
    "dir": "personal/ghost/firetv",
    "ad": "TODO art-director line"
+  },
+  {
+   "id": "ghosttv-card",
+   "k": "projects",
+   "cmd": "(auto)",
+   "d": "Use only when a core skill (load, save, cmds) picks ghosttv (#4): holds the GhostTv project's card (Fire Stick + Samsung TV control). Never typed by the user.",
+   "tok": "project",
+   "dir": "projects/ghosttv/ghosttv-card",
+   "ad": "TODO art-director line"
   }
  ]
 }

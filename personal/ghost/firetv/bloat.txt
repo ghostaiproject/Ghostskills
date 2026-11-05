@@ -28,3 +28,6 @@ unused com.amazon.bueller.music
 unused com.amazon.gamehub
 unused com.amazon.smarthomemapviewapp
 recs com.amazon.media.recommendations
+extra com.amazon.tahoe
+extra com.amazon.cloud9
+extra com.amazon.tv.website_launcher
