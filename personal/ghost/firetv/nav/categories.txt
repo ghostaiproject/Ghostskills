@@ -1,0 +1,2 @@
+# home -> menu > Edit categories (focus on New category)
+home wait menu wait down ok

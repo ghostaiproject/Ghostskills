@@ -1,0 +1,3 @@
+# home -> Watch row > Manage apps (focus on item 1)
+wait home wait menu wait down ok wait down ok
+down down down down down down down down down down ok
