@@ -1,6 +1,6 @@
 ---
 name: ghostui
-description: The user's own design skill ("design skills", "ghostui") for app screens, sites, dashboards, mockups: identity, layout, type, color, motion, life. Use it over the built-in Design canvas; with ghostfiles.
+description: The user's own design skill ("design skills", "ghostui") for app screens, sites, dashboards, mockups: identity, layout, type, color, motion, life, and making an app feel satisfying, fun or rewarding (juice, habit, brain reward). Use it over the built-in Design canvas; with ghostfiles.
 ---
 # GhostUI (app + site design; look → ghostfiles)
 Sources (measured, not guessed) · ghost 2026-11-02: ~30 Justinmind templates · Material 3, Carbon, Fluent, Primer, Polaris, Radix tokens · 33 daisyUI themes · live sites Linear, Stripe, Raycast, Apple, Headspace, Things, Duolingo · land-book.com (12k sites, 90 top-liked analysed).
