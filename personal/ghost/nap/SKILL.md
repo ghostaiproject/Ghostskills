@@ -1,6 +1,6 @@
 ---
-name: "nap"
-description: "Use when the user sends /nap with time inputs (or asks what nap to take): calculates a nap starting from the chat time that keeps their day on a normal schedule, and can show the graph."
+name: nap
+description: Use when the user sends /nap with time inputs (or asks what nap to take): calculates a nap starting from the chat time that keeps their day on a normal schedule, and can show the graph.
 ---
 
 # /nap
