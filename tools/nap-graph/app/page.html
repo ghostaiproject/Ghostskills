@@ -1,0 +1,69 @@
+<title>Nap Planner</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>/*CSS*/</style>
+<main class="wrap">
+  <header class="top">
+    <h1>Nap Planner</h1>
+    <div class="clock"><span class="lbl">now</span> <b id="clock">--:--</b></div>
+  </header>
+
+  <form id="form" class="card form" autocomplete="off">
+    <fieldset>
+      <legend>When did you last wake up?</legend>
+      <div class="pills" data-name="wokeDay">
+        <button type="button" data-v="0">Today</button>
+        <button type="button" data-v="1">Yesterday</button>
+        <button type="button" data-v="2">2 days ago</button>
+      </div>
+      <input type="time" id="wokeAt" aria-label="Wake-up time">
+    </fieldset>
+    <fieldset>
+      <legend>Bed tonight around</legend>
+      <div class="pills" data-name="bed">
+        <button type="button" data-v="21:00">21:00</button>
+        <button type="button" data-v="22:00">22:00</button>
+        <button type="button" data-v="23:00">23:00</button>
+        <input type="time" id="bedOther" aria-label="Other bedtime">
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Up tomorrow at</legend>
+      <input type="time" id="wake" aria-label="Wake-up time tomorrow">
+    </fieldset>
+    <fieldset>
+      <legend>How wrecked do you feel?</legend>
+      <div class="pills tired" data-name="tired">
+        <button type="button" data-v="fine"><b>Fine</b><small>can push through</small></button>
+        <button type="button" data-v="tired"><b>Tired</b><small>need a boost</small></button>
+        <button type="button" data-v="wrecked"><b>Wrecked</b><small>eyes closing</small></button>
+      </div>
+    </fieldset>
+    <button type="submit" class="go" id="go">Calculate my nap</button>
+  </form>
+
+  <section id="result" aria-live="polite">
+    <p class="example" id="example">Example plan below. Fill in your times and tap Calculate.</p>
+    <div class="hero">
+      <div class="big lie"><span class="lbl">Lie down</span><b id="lieAt">--:--</b><span id="lieIn" class="sub"></span></div>
+      <div class="big alarm"><span class="lbl">Set alarm</span><b id="alarmAt">--:--</b><span id="alarmLen" class="sub"></span>
+        <button type="button" id="copy" class="copy">Copy alarm</button></div>
+      <div class="big none" id="noNap" hidden><span class="lbl">No nap today</span><b>Stay up</b><span class="sub">a 25 min nap would end after 15:00</span></div>
+    </div>
+    <p class="line" id="backup"></p>
+    <div class="card tonight">
+      <div><span class="lbl">Lights out</span><b id="lightsAt">--:--</b></div>
+      <div><span class="lbl">Up</span><b id="upAt">--:--</b></div>
+      <div><span class="lbl">Cycles</span><b id="cyc">-</b></div>
+      <div><span class="lbl">Awake</span><b id="awake">-</b></div>
+    </div>
+    <p class="line warn" id="warn" hidden>Over 30h awake: even 25 min can run deeper. Keep the alarm loud.</p>
+    <div class="card dialcard"><div id="dial"></div>
+      <ul class="legend"><li><i class="k-awake"></i>awake</li><li><i class="k-nap"></i>nap</li><li><i class="k-sleep"></i>asleep</li><li><i class="k-cut"></i>no naps after 15:00</li><li><i class="k-now"></i>now</li><li><i class="k-alarm"></i>alarm</li></ul>
+    </div>
+    <ol class="card times" id="times"></ol>
+    <p class="line">On wake-up: lights on or curtains open, move around, cold water on the face.</p>
+  </section>
+</main>
+<script>/*JS*/</script>
