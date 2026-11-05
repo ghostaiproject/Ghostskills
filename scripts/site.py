@@ -1,4 +1,4 @@
-"""Live data for the CER-01 Main Control artifact (claude.ai/artifact/MRdTjsGHCoySQxbywYjs2g).
+"""Live data for the CER-01 Control artifact (claude.ai/artifact/CB6J9wsz3r6ezd4Eg28ndz, built from Desktop/cer01-app).
 
   python scripts/site.py data    -> site/data.json from the working tree (skills, branch, recent commits)
   python scripts/site.py build   -> site/out/ (index, fr, setup, setup-fr) from site/page.html + site/parts/ + data.json
@@ -15,7 +15,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = os.environ.get('GHOST_SITE') or os.path.join(ROOT, 'site')
 DATA = os.path.join(SITE, 'data.json')
 SYNCED = os.path.join(SITE, '.synced')
-URL = 'https://claude.ai/artifact/MRdTjsGHCoySQxbywYjs2g'
+URL = 'https://claude.ai/artifact/CB6J9wsz3r6ezd4Eg28ndz'
 # self-hosted copy (GitHub Pages) of site/out/
 PAGES_REPO = 'ghostaiproject/cer-01-site'
 # top folder -> map cluster (keys of CL in the page)
