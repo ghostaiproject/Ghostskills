@@ -65,6 +65,7 @@ A `<ctx>-card` holds a project's number, repo, branch, state file, extras and ho
 | [crew](personal/ghost/crew/SKILL.md) | `/crew` (or auto) | Free second brains before Claude answers: Gemini images + text, local Python calc, ChatGPT opinion (Gemini fallback). One command (`crew.py`), ≤10 lines back, cached, no API keys. `/crew test` = stress suite. Setup: `pip install playwright` → `python -m playwright install chromium` |
 | [webd](personal/ghost/webd/SKILL.md) | (auto) | Web design decision order + defaults (tokens, type, a11y, perf, review) and a simple mode for non-tech users |
 | [switch](personal/ghost/switch/SKILL.md) | `/switch [notes]` | Paste-ready brief (one code block) to continue the work in a fresh session (fewer tokens) |
+| [maxed](personal/ghost/maxed/SKILL.md) | `/maxed` (or auto) | Usage limit hit → reads the reset time on claude.ai, schedules a one-time task that resumes the work just after it |
 
 ## wiki plugin (modelled on claude-obsidian)
 Installable as a Claude Code plugin (`.claude-plugin/`): `/plugin marketplace add <this repo>` → `/plugin install ghostskills`. Knowledge lives in a **separate vault** (never this repo); skills load only when their trigger fires.
