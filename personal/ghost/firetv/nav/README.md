@@ -14,6 +14,7 @@ Add a macro whenever a path works twice. One key per token; `#` = comment.
 - Home focus lands on the 1st tile of the 1st row (Watch).
 
 ## Projectivy map
+Reference screens (what each place looks like, 960px): `docs/img/01-home` · `02-menu` · `03-categories` · `04-row-settings` · `05-manage-apps` · `06-projectivy-settings` · `07-wallpaper` (.jpg) in the GhostTv repo. Compare a `go` jpg with these instead of re-reading the screen; panels open on the right third, focus = lighter bar.
 - Home: rows = Watch (Netflix, Prime, YouTube, Crave, Fibe TV, Tou.tv, TVA+, Plex, Kodi) then Settings shortcuts. TV Apps + Mobile Apps rows hidden.
 - `menu` panel: All apps, Edit categories, Edit channels, Projectivy settings, Android settings, Display Profiles...
 - Edit categories: New category, then rows (Watch, Settings, Display, Applications, System, About, Now Playing; hidden rows show an eye icon).
