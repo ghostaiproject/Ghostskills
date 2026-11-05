@@ -1,6 +1,7 @@
 # Fire TV control over ADB. Usage: firetv.ps1 <action> [args]
 # Config (local, never in repo): ~/.claude/firetv.json {"stick":"<ip>","tv":"<ip>"}
 param([Parameter(Position=0)][string]$Action = 'info', [Parameter(Position=1, ValueFromRemainingArguments=$true)][string[]]$Rest)
+if (-not $Rest) { $Rest = @('') }  # no-arg actions (run, restore) index $Rest[0]
 $ErrorActionPreference = 'Stop'
 $env:Path = [Environment]::GetEnvironmentVariable('Path','User') + ';' + $env:Path
 $cfgPath = Join-Path $HOME '.claude\firetv.json'
@@ -37,7 +38,7 @@ switch ($Action) {
   'key'   { Connect; Sh (Seq $Rest) | Out-Null; "sent: $($Rest -join ' ')" }
   'go'    { Connect; if ($Rest) { Sh ((Seq $Rest) + '; sleep 0.5') | Out-Null }; Shot }  # keys -> small jpg in one call (no uiautomator: it makes Projectivy toast 'Accessibility service' dead)
   'text'  { Connect; Sh ("input text '" + (($Rest -join ' ') -replace ' ', '%s' -replace "'", '') + "'") | Out-Null; 'typed' }
-  'app'   { Connect; $p = if ($apps.ContainsKey($Rest[0])) { $apps[$Rest[0]] } else { $Rest[0] }; Sh "monkey -p $p -c android.intent.category.LAUNCHER 1" | Out-Null; "opened $p" }
+  'app'   { Connect; $p = if ($apps.ContainsKey($Rest[0])) { $apps[$Rest[0]] } else { $Rest[0] }; Sh "monkey -p $p -c android.intent.category.LAUNCHER 1 >/dev/null 2>&1" | Out-Null; "opened $p" }
   'stop'  { Connect; $p = if ($apps.ContainsKey($Rest[0])) { $apps[$Rest[0]] } else { $Rest[0] }; Sh "am force-stop $p" | Out-Null; "stopped $p" }
   'apps'  { Connect; Sh 'pm list packages -3' | ForEach-Object { $_ -replace '^package:' } }
   'logs'  { Connect; $pat = if ($Rest) { $Rest -join '|' } else { 'hdmi|hdcp|hotplug|FATAL|ANR' }; Sh "logcat -d -v time | grep -iE '$pat' | grep -v MPB_DRM | tail -40" | ForEach-Object { if ($_.Length -gt 200) { $_.Substring(0,200) } else { $_ } } }
