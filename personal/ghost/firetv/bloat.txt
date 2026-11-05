@@ -1,0 +1,31 @@
+# group package  (removed for user 0 only; firetv.ps1 restore brings back)
+# Never list: OTA/updates, launcher, settings, venezia (Appstore), alexa core, webview, DRM, devicecontrol (CEC/IR)
+track com.amazon.device.metrics
+track com.amazon.device.telemetry.emitter
+track com.amazon.wirelessmetrics.service
+track com.amazon.hybridadidservice
+track com.amazon.ftvads.deeplinking
+track com.amazon.tv.acr
+track com.amazon.perfc
+track com.amazon.perfcollection
+track com.amazon.dp.logger
+track com.amazon.logan
+track com.amazon.neo.minerva.logcat
+track com.amazon.ceviche
+track com.amazon.prism.android.service
+track com.amazon.tv.developer.dataservice
+shop com.amazon.shoptv.client
+shop com.amazon.shoptv.firetv.client
+shop com.amazon.minitv.android.app
+shop com.amazon.tv.earlyaccess
+shop com.amazon.sneakpeek
+shop com.amazon.tv.easyupgrade
+shop com.amazon.storm.lightning.tutorial
+shop com.amazon.tmm.tutorial
+shop com.amazon.tv.releasenotes
+unused com.amazon.tv.ftvambient
+unused com.amazon.bueller.photos
+unused com.amazon.bueller.music
+unused com.amazon.gamehub
+unused com.amazon.smarthomemapviewapp
+recs com.amazon.media.recommendations
