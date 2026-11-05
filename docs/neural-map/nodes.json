@@ -243,6 +243,15 @@
    "tok": "0 (code)",
    "dir": "scripts/ghostskills.py",
    "ad": "The engine room. Brass-colored gears turned to circuit traces, steam as blue fog."
+  },
+  {
+   "id": "firetv",
+   "k": "personal",
+   "cmd": "(auto)",
+   "d": "Control the Fire TV Stick (ADB over Wi-Fi) and Samsung TV (local remote API) from the PC; debloat/restore the stick, read its HDMI logs. Use for any Fire Stick or TV control, fix or customize request.",
+   "tok": "personal",
+   "dir": "personal/ghost/firetv",
+   "ad": "TODO art-director line"
   }
  ]
 }
