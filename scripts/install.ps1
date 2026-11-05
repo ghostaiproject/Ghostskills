@@ -22,11 +22,14 @@ if (Test-Path (Join-Path $Dir '.git')) {
 } else { git clone -q $url $Dir; Say "Cloned to $Dir" }
 
 # 2. Pick skill folders: core, cer-01, tools for everyone + chosen projects/personal.
+# -File passes -Projects a,b as ONE string: split it.
+$Projects = @($Projects | ForEach-Object { $_ -split ',' } | ForEach-Object { $_.Trim() } | Where-Object { $_ })
 $roots = @('core', 'cer-01', 'tools') + ($Projects | Where-Object { $_ } | ForEach-Object { "projects/$_" })
 if ($Personal) { $roots += "personal/$Personal" }
 $skills = foreach ($r in $roots) {
     $p = Join-Path $Dir $r
-    if (-not (Test-Path $p)) { Say "skip $r (not in repo)"; continue }
+    # Write-Host, not Say: output here lands in $skills as a nameless "skill" (that moved the whole skills folder, 2026-11-04).
+    if (-not (Test-Path $p)) { if (-not $Update) { Write-Host "skip $r (not in repo)" }; continue }
     Get-ChildItem $p -Recurse -Filter SKILL.md | Where-Object { $_.FullName -notmatch '[\\/]_template[\\/]' } | ForEach-Object { $_.Directory }
 }
 
@@ -35,6 +38,7 @@ $target = Join-Path $ClaudeDir 'skills'
 New-Item -ItemType Directory -Force $target | Out-Null
 $backup = Join-Path $ClaudeDir ("skills-backup-" + (Get-Date -Format yyyyMMdd-HHmmss))
 foreach ($s in $skills) {
+    if (-not ($s -is [IO.DirectoryInfo]) -or -not $s.Name) { continue }
     $link = Join-Path $target $s.Name
     $item = Get-Item $link -Force -ErrorAction SilentlyContinue
     if ($item -and $item.LinkType) { if ($item.Target -contains $s.FullName) { continue }; $item.Delete() }
