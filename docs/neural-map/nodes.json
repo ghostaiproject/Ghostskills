@@ -1,0 +1,248 @@
+{
+ "agents": 3,
+ "nodes": [
+  {
+   "id": "load",
+   "k": "core",
+   "cmd": "/load [# | name]",
+   "d": "Numbered menu of your projects and memory contexts. Reply with a number to load one. Pulls the live CER-01 CORE from GitHub.",
+   "tok": "core",
+   "dir": "core/load",
+   "ad": "Open on a threshold. The viewer is about to enter a room. Keep it dark, give them one light to walk toward."
+  },
+  {
+   "id": "save",
+   "k": "core",
+   "cmd": "/save [# | name]",
+   "d": "Saves whatever this chat loaded. Nothing loaded shows the same menu. Ends with a harvest of up to 3 things worth keeping.",
+   "tok": "core",
+   "dir": "core/save",
+   "ad": "Aftermath. The same corridor, doors now closed, a faint green afterimage where something was stored."
+  },
+  {
+   "id": "cmds",
+   "k": "core",
+   "cmd": "/cmds /sync /ship /list /new",
+   "d": "Numbered command menu. Sync pushes work in progress and stops on secrets. Ship builds a release. List shows tools and lessons. New adds a project.",
+   "tok": "core",
+   "dir": "core/cmds",
+   "ad": "A control panel seen from behind the glass. Many switches, only a few lit. Restraint is the menace."
+  },
+  {
+   "id": "grocrun-card",
+   "k": "projects",
+   "cmd": "(auto)",
+   "d": "Card #1. Holds repo, branch, state file, extras and how GrocRun ships. Joins the menu by itself.",
+   "tok": "project",
+   "dir": "projects/grocrun/grocrun-card",
+   "ad": "Cold neon on a supermarket sign after the lights died. Familiar, then wrong."
+  },
+  {
+   "id": "grocrun-dev",
+   "k": "projects",
+   "cmd": "/ship (grocrun)",
+   "d": "Dev rules for the GrocRun Android app (Grocerierun). Extras and replies live in side files read only when needed.",
+   "tok": "project",
+   "dir": "projects/grocrun/grocrun-dev",
+   "ad": "Assembly line at night. Small glowing parts on a belt, no workers, one red inspector lamp."
+  },
+  {
+   "id": "skills-card",
+   "k": "projects",
+   "cmd": "/ship (skills)",
+   "d": "Card #2. This repo. Ship runs check.ps1 -Pack, lists changed zips for upload, then records the sha.",
+   "tok": "project",
+   "dir": "projects/skills/skills-card",
+   "ad": "The snake eating its own tail, rendered as a ring of cable. Calm, mechanical, slightly funny."
+  },
+  {
+   "id": "window-card",
+   "k": "projects",
+   "cmd": "(auto)",
+   "d": "Card #3. Echo open-the-windows alert (Ouvrelesfnetre), with the Alexa console tool.",
+   "tok": "project",
+   "dir": "projects/window/window-card",
+   "ad": "A window at 3 a.m., rain on the glass, one red indicator blinking on the sill."
+  },
+  {
+   "id": "CER-01",
+   "k": "edged",
+   "cmd": "/cer [harvest|add|+1|tidy|show]",
+   "d": "CER-01, call sign CER: one persona for the whole crew. CORE.md loads every chat (1.5 KB cap). Lines with 2+ votes get promoted. Repo is public: handles only.",
+   "tok": "every chat",
+   "dir": "cer-01",
+   "ad": "This is the soul, so give it texture. Warm static, hand-painted grime, a smile you are not sure about."
+  },
+  {
+   "id": "alexa-console-edit",
+   "k": "tools",
+   "cmd": "(auto)",
+   "d": "Edit and build an Alexa skill’s interaction model in the developer console through Chrome, script-first.",
+   "tok": "tool",
+   "dir": "tools/alexa-console-edit",
+   "ad": "Macro of a speaker grille, dust and light. The machine listening, patient and a little hungry."
+  },
+  {
+   "id": "ghostui",
+   "k": "tools",
+   "cmd": "(auto) design",
+   "d": "Design skill for app screens and sites: identity, layout, type, color, motion, life. REWARD.md is its brain reward map: dopamine prediction error, wanting vs liking, goal gradient, 14 reward kinds (surprise, curiosity, social, giving, anticipation, ownership, mastery, completion, relief…), juice rules and ethics.",
+   "tok": "tool",
+   "dir": "tools/ghostui",
+   "ad": "A single marble dropping into a glass jar of light, the splash frozen as sparks. Warm reward glow in a cold room."
+  },
+  {
+   "id": "ghostfiles",
+   "k": "tools",
+   "cmd": "(auto) files",
+   "d": "Ghost style for anything made as a file: images, PNGs, charts, decks, docs. Flat, clean, phone-fit.",
+   "tok": "tool",
+   "dir": "tools/ghostfiles",
+   "ad": "One sheet of paper under a desk lamp, perfectly flat, the only bright thing in the frame."
+  },
+  {
+   "id": "ghoststyle",
+   "k": "tools",
+   "cmd": "(auto) replies",
+   "d": "Ghost reply style for every chat reply: narrow banner, small section boxes, casual tone, recap, next-step question.",
+   "tok": "tool",
+   "dir": "tools/ghoststyle",
+   "ad": "A narrow neon sign over a door, boxed letters humming in the rain."
+  },
+  {
+   "id": "chief-dev",
+   "k": "tools",
+   "cmd": "(auto)",
+   "d": "Decides instead of asking: small follow-ups, polish, stack and UX choices with a sensible default.",
+   "tok": "tool",
+   "dir": "tools/chief-dev",
+   "ad": "A hand flipping one switch on a wall of switches, no hesitation, one light comes on."
+  },
+  {
+   "id": "link",
+   "k": "personal",
+   "cmd": "/link <msg>",
+   "d": "Phone chat relays a task to Claude on Ghost’s laptop.",
+   "tok": "personal",
+   "dir": "personal/ghost/link",
+   "ad": "Two glowing windows in two dark buildings, a thin thread of light between them. Nothing else."
+  },
+  {
+   "id": "next",
+   "k": "personal",
+   "cmd": "(auto)",
+   "d": "After computer actions, asks the next step as y/n or numbered.",
+   "tok": "personal",
+   "dir": "personal/ghost/next",
+   "ad": "A fork in a wet alley. Two arrows of light on the ground, neither clearly better."
+  },
+  {
+   "id": "do",
+   "k": "personal",
+   "cmd": "/do <task>",
+   "d": "Asks y/n, then controls the PC. Gated by do-gate.ps1 hooks, so nothing moves without a yes.",
+   "tok": "personal",
+   "dir": "personal/ghost/do",
+   "ad": "A hand-shaped void reaching toward a keyboard, held back by a bar of red light. Tension, not violence."
+  },
+  {
+   "id": "remote-view",
+   "k": "personal",
+   "cmd": "\"remote view\"",
+   "d": "Low-token PC work: text first, one screenshot at the end.",
+   "tok": "personal",
+   "dir": "personal/ghost/remote-view",
+   "ad": "A security monitor with one clean frame in a wall of static. Economy of looking."
+  },
+  {
+   "id": "ceig",
+   "k": "personal",
+   "cmd": "/ceig <idea>",
+   "d": "Chrome Extension Image Generation. Gemini in Chrome, download, upscale to 3840x2160, optional wallpaper. Prompts follow anti-AI-look rules.",
+   "tok": "personal",
+   "dir": "personal/ghost/ceig",
+   "ad": "That is me. I do not describe the picture, I describe how it was wrongly photographed. Grain, haze, dust."
+  },
+  {
+   "id": "crew",
+   "k": "personal",
+   "cmd": "/crew",
+   "d": "Free second brains: Gemini for art, local Python for math, ChatGPT for opinions. Claude answers last.",
+   "tok": "personal",
+   "dir": "personal/ghost/crew",
+   "ad": "Three screens around one chair, each glowing a different color, one voice in the middle."
+  },
+  {
+   "id": "switch",
+   "k": "personal",
+   "cmd": "/switch [notes]",
+   "d": "Hands the work to a fresh session as one paste-ready brief. Fresh context, fewer tokens.",
+   "tok": "personal",
+   "dir": "personal/ghost/switch",
+   "ad": "A baton of light passed between two hands in a dark corridor."
+  },
+  {
+   "id": "webd",
+   "k": "personal",
+   "cmd": "(auto) web",
+   "d": "Web design decisions in a fixed order with defaults, so each choice is made once.",
+   "tok": "personal",
+   "dir": "personal/ghost/webd",
+   "ad": "A blueprint grid lit from below, one line already drawn in red."
+  },
+  {
+   "id": "wiki",
+   "k": "wiki",
+   "cmd": "wiki (trigger)",
+   "d": "Setup and routing for the knowledge vault. The vault is a separate folder, never this repo.",
+   "tok": "on trigger",
+   "dir": "skills/wiki",
+   "ad": "The archive door. Heavy, quiet, one blue seam of light around its edge."
+  },
+  {
+   "id": "wiki-ingest",
+   "k": "wiki",
+   "cmd": "wiki-ingest",
+   "d": "Reviewed transaction into the vault: SHA-256 preconditions, path containment, journal and rollback, idempotent ids.",
+   "tok": "on trigger",
+   "dir": "skills/wiki-ingest",
+   "ad": "Pages falling into a dark well, each lit for a half second as it passes."
+  },
+  {
+   "id": "wiki-query",
+   "k": "wiki",
+   "cmd": "wiki-query",
+   "d": "Read-only BM25 search with query budgets of 12, 48 and 128 KB.",
+   "tok": "on trigger",
+   "dir": "skills/wiki-query",
+   "ad": "A flashlight sweep across shelves. The beam is the subject, the books are rumor."
+  },
+  {
+   "id": "wiki-save",
+   "k": "wiki",
+   "cmd": "wiki-save",
+   "d": "Writes to the vault, only when asked.",
+   "tok": "on trigger",
+   "dir": "skills/wiki-save",
+   "ad": "One hand-lit stamp pressing into wax, blue light under the seal."
+  },
+  {
+   "id": "wiki-lint",
+   "k": "wiki",
+   "cmd": "wiki-lint",
+   "d": "Finds dead and ambiguous links, orphans, bad frontmatter, empty sections and a stale index.",
+   "tok": "on trigger",
+   "dir": "skills/wiki-lint",
+   "ad": "Broken threads in a web, each snag marked by a tiny red spark."
+  },
+  {
+   "id": "ghostskills.py",
+   "k": "wiki",
+   "cmd": "python scripts/ghostskills.py",
+   "d": "Stdlib Python core: init (dry-run, then --apply with plan hash), inspect, apply, recover, lint, search, hook.",
+   "tok": "0 (code)",
+   "dir": "scripts/ghostskills.py",
+   "ad": "The engine room. Brass-colored gears turned to circuit traces, steam as blue fog."
+  }
+ ]
+}
