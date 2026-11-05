@@ -51,5 +51,8 @@ switch ($Action) {
     foreach ($p in $list) { Sh "cmd package install-existing $p 2>&1; pm enable $p 2>&1; pm unsuspend --user 0 $p 2>&1" | Out-Null; "restored $p" }
     if (-not $Rest) { Remove-Item $logPath }
   }
-  default { 'actions: set info key text app stop apps logs shot debloat restore' }
+  'ux'    { Connect; Sh ((Get-Content (Join-Path $here 'ux.sh') | Where-Object { $_ -notmatch '^#' }) -join '; ') }
+  'ux-reset' { Connect; Sh 'for k in window_animation_scale transition_animation_scale animator_duration_scale; do settings put global $k 1.0; done; for k in limit_ad_tracking amz_limit_ad_tracking non_amz_limit_ad_tracking; do settings put secure $k 0; done; echo reset' }
+  'access' { Connect; Sh 'am start -a android.settings.ACCESSIBILITY_SETTINGS' | Out-Null; 'Accessibility screen open on TV: user toggles the app' }
+  default { 'actions: set info key text app stop apps logs shot debloat restore ux ux-reset access' }
 }
