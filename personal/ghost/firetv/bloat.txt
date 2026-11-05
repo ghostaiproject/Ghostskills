@@ -1,5 +1,5 @@
-# group package  (removed for user 0 only; firetv.ps1 restore brings back)
-# Never list: OTA/updates, launcher, settings, venezia (Appstore), alexa core, webview, DRM, devicecontrol (CEC/IR)
+﻿# group package  (removed for user 0 only; firetv.ps1 restore brings back)
+# Never list: prism (Appstore needs it), OTA/updates, launcher, settings, venezia (Appstore), alexa core, webview, DRM, devicecontrol (CEC/IR)
 track com.amazon.device.metrics
 track com.amazon.device.telemetry.emitter
 track com.amazon.wirelessmetrics.service
@@ -12,7 +12,6 @@ track com.amazon.dp.logger
 track com.amazon.logan
 track com.amazon.neo.minerva.logcat
 track com.amazon.ceviche
-track com.amazon.prism.android.service
 track com.amazon.tv.developer.dataservice
 shop com.amazon.shoptv.client
 shop com.amazon.shoptv.firetv.client
