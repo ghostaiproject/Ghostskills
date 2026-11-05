@@ -4,7 +4,7 @@ description: The user's own design skill ("design skills", "ghostui") for app sc
 ---
 # GhostUI (app + site design; look → ghostfiles)
 Sources (measured, not guessed) · ghost 2026-11-02: ~30 Justinmind templates · Material 3, Carbon, Fluent, Primer, Polaris, Radix tokens · 33 daisyUI themes · live sites Linear, Stripe, Raycast, Apple, Headspace, Things, Duolingo · land-book.com (12k sites, 90 top-liked analysed).
-Read when needed: IDENTITY.md (style recipes) · LIFE.md (always: AI-look tells, make it alive, review loop) · MOTION.md (timings, keyframes) · LAYOUT.md (phone/tablet/desktop) · LANDING.md (websites: sections, hero copy, site trends).
+Read when needed: IDENTITY.md (style recipes) · LIFE.md (always: AI-look tells, make it alive, review loop) · MOTION.md (timings, keyframes) · LAYOUT.md (phone/tablet/desktop) · LANDING.md (websites: sections, hero copy, site trends). · REWARD.md (satisfying / fun / habit: brain reward map, juice rules, ethics).
 
 ## 1. Identity first (every design)
 - Mood from the subject's world: place, season, time, material.
