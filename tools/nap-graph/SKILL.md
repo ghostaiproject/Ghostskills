@@ -19,3 +19,4 @@ Understands: `lie down` + `alarm, N min` · `nap N min` · `no naps after`/`cuto
 - Phone: run the script, pass the SVG as is to the visualize widget (it brings its own dark background), one short line after.
 - PC: SendUserFile the .svg.
 - Example: `example.svg` (13:00 nap, 21:45 lights out, 07:00 up, 6 cycles).
+- Planner page (form + results + dial, artifact https://claude.ai/artifact/PB3jysDYJcdaHFo6MMqhtU): `app/` parts → `python app/build.py` → publish `app/dist/index.html` to that URL.
