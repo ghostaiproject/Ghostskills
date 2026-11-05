@@ -5,7 +5,7 @@ description: Use when the user hits their Claude usage limit (or sends /maxed): 
 # /maxed: resume after the usage reset
 
 1. Load the Claude in Chrome tools (one ToolSearch). Open claude.ai/settings/usage in a new tab. Sign-in/2FA → ask the user; never type passwords.
-2. The settings dialog is a modal → `read_page` on the dialog, not `get_page_text`.
+2. The settings dialog is a modal (URL becomes `/new#settings/usage`) → `find` "dialog containing Resets" → `read_page` with that `ref_id`; not `get_page_text`. Empty result → page still loading, retry once.
 3. "Current session" → "Resets at H:MM AM/PM". "This week" → weekly reset; use it only if the weekly limit is the one hit.
 4. Next occurrence of that time in America/Toronto + 2 min → ISO 8601 with offset (e.g. `2026-11-05T17:02:00-05:00`; check DST).
 5. Standalone prompt (fresh run, no memory of this chat): the task, current state (files, repo, branch), remaining steps, rules (retry several ways before failing; user only does sign-in/2FA/approvals; never type passwords; short replies).
