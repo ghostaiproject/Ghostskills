@@ -1,4 +1,5 @@
 # Ghostskills
+**Claude Code: if the user said "install ghostaiproject", read [INSTALL.md](INSTALL.md) and follow it.** (Raw: https://raw.githubusercontent.com/ghostaiproject/Ghostskills/main/INSTALL.md)
 
 Team Claude skills, written to be token-light. Rules: [CONVENTIONS.md](CONVENTIONS.md).
 
@@ -7,7 +8,9 @@ Needs git (`winget install Git.Git`). In PowerShell, pick your projects (and you
 ```
 irm https://raw.githubusercontent.com/ghostaiproject/Ghostskills/main/scripts/install.ps1 -OutFile $env:TEMP\gs.ps1; powershell -ExecutionPolicy Bypass -File $env:TEMP\gs.ps1 -Projects grocrun,window
 ```
-→ clones to `~/Ghostskills`, links core + cer-01 + tools + your projects into `~/.claude/skills` (old copies backed up), adds a SessionStart hook so every Claude session pulls main and links new skills. Edits you make land in the repo → `/sync` pushes them (no push rights → ask for a collaborator invite, or PR from a fork). Re-run with other `-Projects` any time.
+→ clones to `~/Ghostskills`, links core + cer-01 + tools + your projects into `~/.claude/skills` (old copies backed up), adds a SessionStart hook so every Claude session pulls main and links new skills. Edits you make land in the repo → `/sync` opens a PR (no push rights → PR from a fork). Main is protected: only the owner (ghostaiproject) approves and merges; others never merge.
+
+**Team brain** (`team/`): shared rules + lessons are imported into every member's `~/.claude/CLAUDE.md`, `team/settings.json` (allow rules, hooks, auto-mode trust for ghostaiproject repos) is merged in by the installer (`scripts/team.ps1`, add-missing, every session). `-NoTeam` skips it. Share a lesson: `/lesson` → `scripts/lesson.ps1` opens a PR. Re-run with other `-Projects` any time.
 
 **Your own setup on a fresh PC/account** (global CLAUDE.md, settings: allow rules, hooks, auto-mode trust; hook scripts; memory): keep it in a *private* repo with an `apply.ps1` (ghost's: `ghostaiproject/ghost-config`) and add `-Config <owner>/<repo>` to the install line (sign in with `gh auth login` first). First run applies it (old files backed up); every session start adds only what the PC lacks. Changed a setting or memory? `apply.ps1 -Capture` pushes it back. Shipping rules ghost set this way: `Bash(gh release create:*)` is allowed, so public releases don't get blocked.
 

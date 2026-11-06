@@ -1,9 +1,11 @@
 # Install Ghostskills on this PC: clone/pull the repo, link its skills into ~/.claude/skills, auto-update every Claude session.
 # First run: -Projects grocrun,window (cards to add) -Personal <you> (your personal folder) -NoAutoUpdate (skip the hook)
 #   -Config owner/repo (your private setup repo: CLAUDE.md, settings, hooks, memory; applied by its apply.ps1).
+#   -Config auto: use <your-github>/claude-config, creating it (private) and capturing this PC into it if it does not exist.
+#   -NoTeam: skip the shared team brain (team/: rules + lessons imported into CLAUDE.md, settings template merged in).
 # Later runs (and the SessionStart hook) use -Update: pull + link any new skill, choices read from ~/.claude/ghostskills.json.
 param([string[]]$Projects = @(), [string]$Personal = '', [string]$Dir = (Join-Path $HOME 'Ghostskills'),
-      [string]$ClaudeDir = (Join-Path $HOME '.claude'), [string]$Config = '', [switch]$Update, [switch]$NoAutoUpdate)
+      [string]$ClaudeDir = (Join-Path $HOME '.claude'), [string]$Config = '', [switch]$Update, [switch]$NoAutoUpdate, [switch]$NoTeam)
 $ErrorActionPreference = 'Stop'
 $url = 'https://github.com/ghostaiproject/Ghostskills.git'
 $cfgFile = Join-Path $ClaudeDir 'ghostskills.json'
@@ -12,7 +14,7 @@ function Say($m) { if (-not $Update) { Write-Output $m } }
 if (-not (Get-Command git -ErrorAction SilentlyContinue)) { throw 'git not found. Install it: winget install Git.Git  (then reopen the terminal)' }
 if ($Update -and (Test-Path $cfgFile)) {
     $c = [IO.File]::ReadAllText($cfgFile) | ConvertFrom-Json
-    $Dir = $c.dir; $Projects = @($c.projects); $Personal = $c.personal; $Config = "$($c.config)"
+    $Dir = $c.dir; $Projects = @($c.projects); $Personal = $c.personal; $Config = "$($c.config)"; $NoTeam = -not $c.team   # installs from before team/ existed: no team
 }
 
 # 1. Repo: clone once, then fast-forward only (never touches local work).
@@ -52,7 +54,32 @@ Get-ChildItem $target -Directory | Where-Object { $_.LinkType -and "$($_.Target)
     ForEach-Object { $_.Delete(); Write-Output "removed $($_.Name) (gone from repo)" }
 
 # 4. Save choices + add a SessionStart hook that runs -Update (once).
-@{ dir = $Dir; projects = @($Projects); personal = $Personal; config = $Config } | ConvertTo-Json | Set-Content $cfgFile -Encoding utf8
+# 3b. Team brain (add-missing, every run; the installer applies trust and allow rules, Claude never writes them).
+if (-not $NoTeam) { & (Join-Path $Dir 'scripts/team.ps1') -ClaudeDir $ClaudeDir -GS $Dir | ForEach-Object { Say $_ } }
+
+# 3c. -Config auto → <login>/claude-config: create it from templates/claude-config if missing (needs gh signed in).
+if ($Config -eq 'auto') {
+    $ErrorActionPreference = 'Continue'
+    if (-not (Get-Command gh -ErrorAction SilentlyContinue)) { throw 'gh not found. Install it: winget install GitHub.cli, then gh auth login' }
+    $login = "$(gh api user -q .login 2>$null)".Trim()
+    if (-not $login) { throw 'Not signed in to GitHub: run gh auth login, then rerun this line.' }
+    gh auth setup-git 2>&1 | Out-Null
+    $Config = "$login/claude-config"; $cdir = Join-Path (Split-Path $Dir) 'claude-config'
+    gh repo view $Config --json name 2>&1 | Out-Null
+    if ($LASTEXITCODE) {
+        gh repo create $Config --private --description 'My Claude Code setup (Ghostskills installer)' 2>&1 | Out-Null
+        if ($LASTEXITCODE) { throw "could not create $Config" }
+        if (-not (Test-Path (Join-Path $cdir '.git'))) { git init -q $cdir; git -C $cdir remote add origin "https://github.com/$Config.git" }
+        Copy-Item (Join-Path $Dir 'templates/claude-config/*') $cdir -Force
+        if (-not "$(git -C $cdir config user.email)") { git -C $cdir config user.name $login; git -C $cdir config user.email "$login@users.noreply.github.com" }
+        if (-not (Test-Path (Join-Path $ClaudeDir 'CLAUDE.md'))) { [IO.File]::WriteAllText((Join-Path $ClaudeDir 'CLAUDE.md'), "# My Claude Code rules`n") }
+        try { & (Join-Path $cdir 'apply.ps1') -Capture -ClaudeDir $ClaudeDir -GS $Dir | Out-Null } catch { Write-Host "capture: $_" }
+        git -C $cdir branch -M main 2>&1 | Out-Null; git -C $cdir push -q -u origin main 2>&1 | Out-Null
+        if ($LASTEXITCODE) { Write-Host "created $Config, NOT pushed: run apply.ps1 -Capture in $cdir later" } else { Say "Created private $Config with this PC's setup." }
+    }
+    $ErrorActionPreference = 'Stop'
+}
+@{ dir = $Dir; projects = @($Projects); personal = $Personal; config = $Config; team = -not $NoTeam } | ConvertTo-Json | Set-Content $cfgFile -Encoding utf8
 if (-not $Update -and -not $NoAutoUpdate) {
     $settingsFile = Join-Path $ClaudeDir 'settings.json'
     $s = if (Test-Path $settingsFile) { [IO.File]::ReadAllText($settingsFile) | ConvertFrom-Json } else { [pscustomobject]@{} }
