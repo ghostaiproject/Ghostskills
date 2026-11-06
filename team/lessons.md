@@ -1,0 +1,11 @@
+# Team lessons (shared; one line each, `· <handle> <date>`; add with /lesson)
+- Bundle several small changes into one commit/PR instead of one PR per change. · ghost 2026-11-06
+- Owner (ghostaiproject) on own PRs: merge without asking once CI passes (`gh pr merge --merge --auto`); everyone else waits for the owner's approval. · ghost 2026-11-06
+- Choices with a sensible default: decide and say so in one line; ask only what changes the outcome. · ghost 2026-11-06
+- Progress notes during actions: one short line each; final report tiny. · ghost 2026-11-06
+- /switch briefs: short and accurate; no invented next steps, propose only when nothing is queued. · ghost 2026-11-06
+- Finish ship/verify steps yourself (browser, terminal, adb); never hand the user steps you can do, never type their secrets. · ghost 2026-11-06
+- Verify on the PC (browser, exe, LAN site) rather than driving a phone the user is holding. · ghost 2026-11-06
+- After site or skill changes, ask "Should I publish?" with a picker before publishing. · ghost 2026-11-06
+- PowerShell 5.1: git writes progress to stderr; set `$ErrorActionPreference='Continue'` around git calls or the script stops. · ghost 2026-11-06
+- PowerShell `-File` passes `-Projects a,b` as one string: split on commas. · ghost 2026-11-06

@@ -1,6 +1,6 @@
 {
   "name": "ghostskills",
-  "description": "Ghostskills distribution channel",
+  "description": "Ghostskills distribution channel. To install the whole team setup (\"install ghostaiproject\"), read INSTALL.md at the repo root.",
   "owner": { "name": "Ghostskills" },
   "plugins": [
     {

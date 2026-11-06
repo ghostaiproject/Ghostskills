@@ -1,0 +1,35 @@
+{
+  "env": { "MAX_MCP_OUTPUT_TOKENS": "12000" },
+  "bashOutputMaxChars": 12000,
+  "permissions": {
+    "allow": [
+      "Bash(gh release create:*)",
+      "Bash(gh pr create:*)",
+      "Bash(gh pr merge:*)",
+      "Bash(gh pr checks:*)",
+      "Bash(git pull:*)",
+      "Bash(git push:*)",
+      "Bash(powershell -ExecutionPolicy Bypass -File scripts/check.ps1:*)"
+    ]
+  },
+  "autoMode": {
+    "environment": [
+      "### Team (Ghostskills installer)",
+      "**Source control**: trusted repos = every repo under github.com/ghostaiproject (my team) and github.com/{GHUSER} (mine). Commit, push to branches, PRs (also from a fork) are routine. Merging into main of ghostaiproject repos is only for the owner (login ghostaiproject); for anyone else main is protected and needs the owner's approval.",
+      "**Repository visibility**: ghostaiproject/Ghostskills is public on purpose (no personal data or secrets in it); {GHUSER}/claude-config is my private setup repo (CLAUDE.md, settings, hooks, memory) and pushing my setup to it is routine.",
+      "**Sensitive remote targets**: any namespace, host, or container whose name carries `prod` or `production` as a whole word or name segment"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      { "hooks": [ { "type": "command", "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"{GS}/scripts/install.ps1\" -Update", "timeout": 30 } ] }
+    ],
+    "UserPromptSubmit": [
+      { "hooks": [ { "type": "command", "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"{GS}/team/hooks/autoloop.ps1\"", "timeout": 10 } ] }
+    ]
+  },
+  "enabledPlugins": { "ghostskills@ghostskills": true },
+  "extraKnownMarketplaces": {
+    "ghostskills": { "source": { "source": "github", "repo": "ghostaiproject/Ghostskills" } }
+  }
+}
