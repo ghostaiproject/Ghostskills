@@ -8,7 +8,7 @@ Needs git (`winget install Git.Git`). In PowerShell, pick your projects (and you
 ```
 irm https://raw.githubusercontent.com/ghostaiproject/Ghostskills/main/scripts/install.ps1 -OutFile $env:TEMP\gs.ps1; powershell -ExecutionPolicy Bypass -File $env:TEMP\gs.ps1 -Projects grocrun,window
 ```
-→ clones to `~/Ghostskills`, links core + cer-01 + tools + your projects into `~/.claude/skills` (old copies backed up), adds a SessionStart hook so every Claude session pulls main and links new skills. Edits you make land in the repo → `/sync` opens a PR (no push rights → PR from a fork). Main is protected: only the owner (ghostaiproject) approves and merges; others never merge.
+→ clones to `~/Ghostskills`, links core + cer-01 + tools + your projects into `~/.claude/skills` (old copies backed up), adds a SessionStart hook so every Claude session pulls main and links new skills. Edits you make land in the repo → `/sync` opens a PR (no push rights → PR from a fork). Main is protected: only the owner (ghostaiproject) approves and merges; others never merge. Owner sets it once, by hand: `powershell -ExecutionPolicy Bypass -File scripts\protect.ps1`; waiting changes show in the CER-01 app's dev-only Approvals tab.
 
 **Team brain** (`team/`): shared rules + lessons are imported into every member's `~/.claude/CLAUDE.md`, `team/settings.json` (allow rules, hooks, auto-mode trust for ghostaiproject repos) is merged in by the installer (`scripts/team.ps1`, add-missing, every session). `-NoTeam` skips it. Share a lesson: `/lesson` → `scripts/lesson.ps1` opens a PR. Re-run with other `-Projects` any time.
 
