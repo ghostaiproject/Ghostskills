@@ -1,8 +1,9 @@
 # Install Ghostskills on this PC: clone/pull the repo, link its skills into ~/.claude/skills, auto-update every Claude session.
-# First run: -Projects grocrun,window (cards to add) -Personal <you> (your personal folder) -NoAutoUpdate (skip the hook).
+# First run: -Projects grocrun,window (cards to add) -Personal <you> (your personal folder) -NoAutoUpdate (skip the hook)
+#   -Config owner/repo (your private setup repo: CLAUDE.md, settings, hooks, memory; applied by its apply.ps1).
 # Later runs (and the SessionStart hook) use -Update: pull + link any new skill, choices read from ~/.claude/ghostskills.json.
 param([string[]]$Projects = @(), [string]$Personal = '', [string]$Dir = (Join-Path $HOME 'Ghostskills'),
-      [string]$ClaudeDir = (Join-Path $HOME '.claude'), [switch]$Update, [switch]$NoAutoUpdate)
+      [string]$ClaudeDir = (Join-Path $HOME '.claude'), [string]$Config = '', [switch]$Update, [switch]$NoAutoUpdate)
 $ErrorActionPreference = 'Stop'
 $url = 'https://github.com/ghostaiproject/Ghostskills.git'
 $cfgFile = Join-Path $ClaudeDir 'ghostskills.json'
@@ -10,8 +11,8 @@ function Say($m) { if (-not $Update) { Write-Output $m } }
 
 if (-not (Get-Command git -ErrorAction SilentlyContinue)) { throw 'git not found. Install it: winget install Git.Git  (then reopen the terminal)' }
 if ($Update -and (Test-Path $cfgFile)) {
-    $c = Get-Content $cfgFile -Raw | ConvertFrom-Json
-    $Dir = $c.dir; $Projects = @($c.projects); $Personal = $c.personal
+    $c = [IO.File]::ReadAllText($cfgFile) | ConvertFrom-Json
+    $Dir = $c.dir; $Projects = @($c.projects); $Personal = $c.personal; $Config = "$($c.config)"
 }
 
 # 1. Repo: clone once, then fast-forward only (never touches local work).
@@ -51,10 +52,10 @@ Get-ChildItem $target -Directory | Where-Object { $_.LinkType -and "$($_.Target)
     ForEach-Object { $_.Delete(); Write-Output "removed $($_.Name) (gone from repo)" }
 
 # 4. Save choices + add a SessionStart hook that runs -Update (once).
-@{ dir = $Dir; projects = @($Projects); personal = $Personal } | ConvertTo-Json | Set-Content $cfgFile -Encoding utf8
+@{ dir = $Dir; projects = @($Projects); personal = $Personal; config = $Config } | ConvertTo-Json | Set-Content $cfgFile -Encoding utf8
 if (-not $Update -and -not $NoAutoUpdate) {
     $settingsFile = Join-Path $ClaudeDir 'settings.json'
-    $s = if (Test-Path $settingsFile) { Get-Content $settingsFile -Raw | ConvertFrom-Json } else { [pscustomobject]@{} }
+    $s = if (Test-Path $settingsFile) { [IO.File]::ReadAllText($settingsFile) | ConvertFrom-Json } else { [pscustomobject]@{} }
     $cmd = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File `"$(($Dir -replace '\\','/'))/scripts/install.ps1`" -Update"
     if (-not $s.hooks) { $s | Add-Member hooks ([pscustomobject]@{}) }
     if (-not $s.hooks.SessionStart) { $s.hooks | Add-Member SessionStart @() }
@@ -64,5 +65,16 @@ if (-not $Update -and -not $NoAutoUpdate) {
         [IO.File]::WriteAllText($settingsFile, ($s | ConvertTo-Json -Depth 20))
         Say "Auto-update on: every Claude Code session pulls main + links new skills."
     }
+}
+# 5. Personal setup repo (private): clone/pull next to Ghostskills, then apply it. -Update only adds what the PC lacks.
+if ($Config) {
+    $cdir = Join-Path (Split-Path $Dir) ($Config -split '/')[-1]
+    $ErrorActionPreference = 'Continue'   # PS 5.1: git stderr must not stop the install
+    if (Test-Path (Join-Path $cdir '.git')) { if (-not (git -C $cdir status --porcelain)) { git -C $cdir pull -q --ff-only 2>&1 | Out-Null } }
+    else { git clone -q "https://github.com/$Config.git" $cdir 2>&1 | Out-Null }
+    if (Test-Path (Join-Path $cdir 'apply.ps1')) {
+        $a = @{ ClaudeDir = $ClaudeDir; GS = $Dir }; if ($Update) { $a.Update = $true }
+        & (Join-Path $cdir 'apply.ps1') @a | ForEach-Object { Say $_ }
+    } else { Write-Host "config $Config not reachable (private repo: sign in with gh auth login first)" }
 }
 Say "Done. Restart Claude Code, then type /load."

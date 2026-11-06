@@ -9,6 +9,8 @@ irm https://raw.githubusercontent.com/ghostaiproject/Ghostskills/main/scripts/in
 ```
 → clones to `~/Ghostskills`, links core + cer-01 + tools + your projects into `~/.claude/skills` (old copies backed up), adds a SessionStart hook so every Claude session pulls main and links new skills. Edits you make land in the repo → `/sync` pushes them (no push rights → ask for a collaborator invite, or PR from a fork). Re-run with other `-Projects` any time.
 
+**Your own setup on a fresh PC/account** (global CLAUDE.md, settings: allow rules, hooks, auto-mode trust; hook scripts; memory): keep it in a *private* repo with an `apply.ps1` (ghost's: `ghostaiproject/ghost-config`) and add `-Config <owner>/<repo>` to the install line (sign in with `gh auth login` first). First run applies it (old files backed up); every session start adds only what the PC lacks. Changed a setting or memory? `apply.ps1 -Capture` pushes it back. Shipping rules ghost set this way: `Bash(gh release create:*)` is allowed, so public releases don't get blocked.
+
 Install on claude.ai: everyone uploads **core**, then only the **project** folders they work on. Personal folders are one person's own; skip them unless you want them. `tools` = generic helpers, add the ones you need.
 Token cost per skill: `scripts/check.ps1 -Tokens` (fails if skill descriptions exceed ~3000 tokens/chat). Upload files: `scripts/check.ps1 -Pack` (Windows: `powershell -ExecutionPolicy Bypass -File scripts\check.ps1 -Pack`) → one zip per skill in `dist/`.
 
