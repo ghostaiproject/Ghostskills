@@ -29,3 +29,4 @@ Your own CLAUDE.md lines and memory win over these. Change a rule for everyone â
 - Never mix one project's state, rules or memory with another's.
 - Questions: bundle every open decision into ONE AskUserQuestion picker (up to 4 questions, short labels, a Recommended option).
 - Never write your own settings, permissions or auto-mode trust: those ship in `team/settings.json` and the user's installer applies them.
+- Install scripts that touch settings or trust: the user runs them; Claude only checks the result Â· ghostaiproject 2026-11-06
