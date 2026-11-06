@@ -3,7 +3,8 @@
 # No push rights → pushes to your fork. The owner merges; every session start pulls main, so it reaches all PCs.
 #   lesson.ps1 -Text "PS 5.1: wrap git calls so stderr does not stop the script"   [-Rule] [-Handle you] [-DryRun]
 param([Parameter(Mandatory)][string]$Text, [switch]$Rule, [string]$Handle = '', [switch]$DryRun,
-      [string]$Dir = (Split-Path $PSScriptRoot), [string]$Upstream = 'ghostaiproject/Ghostskills')
+      [string]$Dir = '', [string]$Upstream = 'ghostaiproject/Ghostskills')
+if (-not $Dir) { $Dir = Split-Path $MyInvocation.MyCommand.Path | Split-Path }   # PS 5.1: $PSScriptRoot is empty in param defaults
 $ErrorActionPreference = 'Continue'   # PS 5.1: git/gh stderr must not stop the script
 $Text = ($Text -replace '\s+', ' ').Trim().TrimStart('-', ' ')
 if ($Text -match 'ghp_|github_pat_|sk-|@[\w-]+\.[a-z]{2,}') { throw 'Looks like a secret or an email: the repo is public. Rewrite it without.' }

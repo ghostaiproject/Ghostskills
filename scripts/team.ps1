@@ -2,7 +2,8 @@
 #   ~/.claude/CLAUDE.md gets @imports of team/CLAUDE.md + team/lessons.md (live files: the pull keeps them fresh);
 #   ~/.claude/settings.json gets team/settings.json merged in: allow rules, hooks, auto-mode trust lines unioned, other keys only if missing.
 # Placeholders in team/settings.json: {HOME}, {GS} (Ghostskills clone), {GHUSER} (your GitHub login; lines with it are dropped if gh is not signed in).
-param([string]$ClaudeDir = (Join-Path $HOME '.claude'), [string]$GS = (Split-Path $PSScriptRoot), [string]$GhUser = '')
+param([string]$ClaudeDir = (Join-Path $HOME '.claude'), [string]$GS = '', [string]$GhUser = '')
+if (-not $GS) { $GS = Split-Path $MyInvocation.MyCommand.Path | Split-Path }   # PS 5.1: $PSScriptRoot is empty in param defaults
 $ErrorActionPreference = 'Stop'
 $utf8 = New-Object Text.UTF8Encoding $false
 function Read-Text($p) { [IO.File]::ReadAllText($p, [Text.Encoding]::UTF8) }
