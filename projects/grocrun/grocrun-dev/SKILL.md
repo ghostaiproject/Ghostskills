@@ -6,7 +6,7 @@ description: Use for any work on the GrocRun Android app (repo ghostaiproject/Gr
 State: HANDOFF.md (repo root). Code work: Read DEV.md + LESSONS.md + CODEMAP.md in ONE batch, then only needed lines (offset/limit ~60). Grep only what CODEMAP lacks.
 
 ## Mode (set by /load grocrun)
-LOCAL = repo folder on the PC; CLOUD = /home/claude/grocerierun. GitHub main = source of truth: fetch + rebase before work, push after.
+LOCAL = repo folder on the PC; CLOUD = /home/claude/grocerierun. GitHub main = source of truth: fetch + rebase before work. App code ships as a branch + PR into main (shows in the CER-01 Approvals tab; the owner merges, then main CI builds + install); never push code to main. [skip ci] state saves (HANDOFF/LESSONS/CODEMAP) may go straight to main.
 First step every chat (before HANDOFF/version reads): `git switch main && git pull --rebase`. The PC copy can sit on an old branch (2026-11-04: demo-mode-5.51.0 showed 5.51 while main was 5.53). Uncommitted work or not on main → say the branch and ask before switching.
 
 ## Tokens
