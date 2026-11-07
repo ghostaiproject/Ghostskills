@@ -1,6 +1,6 @@
 ---
 name: next
-description: Use at the end of EVERY reply to a user prompt: if a next step is possible, end with one multiple-choice picker of next implementations (works on phone/Remote Control too); after page/app/project changes, first a visual review (before vs after, + Gemini critique).
+description: Use at the end of EVERY reply, and for ANY question to the user (y/n too): ask with a question card (AskUserQuestion), never in text; next step possible → one picker of next implementations; after page/app/project changes, first a visual review (before vs after, + Gemini critique).
 ---
 # Next-step question (every prompt)
 After every user prompt → check for a next step. Possible → last thing in the reply is one multiple-choice question. None (pure fact answer, user said stop) → skip.
@@ -12,7 +12,7 @@ After every user prompt → check for a next step. Possible → last thing in th
 4. Close tabs you opened.
 
 ## Choice
-- AskUserQuestion picker, never a prose question (it shows on phone/Remote Control too). Picker not available → in-chat `show_widget` card with 2–4 `sendPrompt` buttons, plus the same options as a numbered line.
+- Every question to the user = question card (AskUserQuestion), y/n included (Yes/No options), never a prose question (it shows on phone/Remote Control too). Up to 4 questions per card; related ones go in one card. Picker not available → in-chat `show_widget` card with 2–4 `sendPrompt` buttons, plus the same options as a numbered line.
 - 2–4 options, short labels, 1-line description each; first = recommended.
 - Options = next implementations on what was just built/found (review fixes, follow-up features, new elements, look/function ideas), not generic help.
 - Picked → do it. "Stop"/no → stop, ask nothing more.
