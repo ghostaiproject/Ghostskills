@@ -57,6 +57,7 @@ A `<ctx>-card` holds a project's number, repo, branch, state file, extras and ho
 | [ghoststyle](tools/ghoststyle/SKILL.md) | Ghost chat-reply style: narrow phone-fit boxes, casual tone, recap, next-step question |
 | [ghostfiles](tools/ghostfiles/SKILL.md) | Ghost file/visual style: flat, clean, phone-fit images (1080x2340), neutral example names |
 | [ghostui](tools/ghostui/SKILL.md) | App/site design: identity recipes, color/type/shape rules, motion timings, life + review loop (AI-look tells, spill check) — measured from templates, 6 design systems, 33 themes, 7 live sites |
+| [no-vibe](tools/no-vibe/SKILL.md) | Code that does not read as vibe-coded: naming, comments, errors, deps, security rules + read-only signal scan and a behavior-preserving cleanup flow |
 | [chief-dev](tools/chief-dev/SKILL.md) | Chief dev for small follow-ups: decides decision-light tweaks (polish, sizing, matching sibling views) and does them instead of asking; real choices still go to a picker; also app-architecture picks (merged from grapp). |
 
 ## personal
