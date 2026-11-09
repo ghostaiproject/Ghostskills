@@ -261,6 +261,60 @@
    "tok": "project",
    "dir": "projects/ghosttv/ghosttv-card",
    "ad": "TODO art-director line"
+  },
+  {
+   "id": "cleancat-card",
+   "k": "projects",
+   "cmd": "(auto)",
+   "d": "Use only when a core skill (load, save, cmds) picks cleancat (#5): holds the CleanCat cleaning calendar app's card (CER-01 unit 06). Never typed by the user.",
+   "tok": "project",
+   "dir": "projects/cleancat/cleancat-card",
+   "ad": "TODO art-director line"
+  },
+  {
+   "id": "nap-graph",
+   "k": "tools",
+   "cmd": "(auto)",
+   "d": "Turn a /nap answer timeline into a precise 24h split-dial SVG (night right half, day left half, cycles C1..Cn, polar hypnogram, exact-time list). Use when a /nap reply asks \"Graph? phone\" or the user wants the nap graph.",
+   "tok": "tool",
+   "dir": "tools/nap-graph",
+   "ad": "TODO art-director line"
+  },
+  {
+   "id": "no-vibe",
+   "k": "tools",
+   "cmd": "(auto)",
+   "d": "Code that doesn't read as vibe-coded/AI-generated. Use when writing or reviewing code, and for \"/no-vibe\" or \"clean up AI-looking code\" in an existing repo (safe, behavior-preserving).",
+   "tok": "tool",
+   "dir": "tools/no-vibe",
+   "ad": "TODO art-director line"
+  },
+  {
+   "id": "autoloop",
+   "k": "personal",
+   "cmd": "(auto)",
+   "d": "The working loop injected on every prompt by a UserPromptSubmit hook (plan, act, verify, ship, wrap up). Never typed by the user.",
+   "tok": "personal",
+   "dir": "personal/ghost/autoloop",
+   "ad": "TODO art-director line"
+  },
+  {
+   "id": "maxed",
+   "k": "personal",
+   "cmd": "(auto)",
+   "d": "Use when the user hits their Claude usage limit (or sends /maxed): reads the exact reset time from claude.ai/settings/usage and schedules a one-time task that resumes the unfinished work right after the reset.",
+   "tok": "personal",
+   "dir": "personal/ghost/maxed",
+   "ad": "TODO art-director line"
+  },
+  {
+   "id": "nap",
+   "k": "personal",
+   "cmd": "(auto)",
+   "d": "Use when the user sends /nap (with or without times) or asks what nap to take: opens the Nap Planner artifact, which asks the questions and shows when to lie down, when to set the alarm, tonight's lights-out and a 24h sleep-cycle dial.",
+   "tok": "personal",
+   "dir": "personal/ghost/nap",
+   "ad": "TODO art-director line"
   }
  ]
 }

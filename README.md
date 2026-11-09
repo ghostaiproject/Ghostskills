@@ -38,6 +38,8 @@ Shortcuts: `/load 1`, `/load grocrun`. Every card owns its number for good (#1 g
 | 1 | [grocrun](projects/grocrun) | grocrun-card, grocrun-dev | GrocRun Android app (Grocerierun) |
 | 2 | [skills](projects/skills) | skills-card | This repo |
 | 3 | [window](projects/window) | window-card (+ tools/alexa-console-edit) | Echo open-the-windows alert (Ouvrelesfnetre) |
+| 4 | [ghosttv](projects/ghosttv) | ghosttv-card (+ personal/ghost/firetv) | Fire Stick + Samsung TV control (GhostTv) |
+| 5 | [cleancat](projects/cleancat) | cleancat-card | CleanCat cleaning calendar Android app (Cleaningcalendar) |
 
 A `<ctx>-card` holds a project's number, repo, branch, state file, extras and how it ships, so the shared commands work on it. It joins the menu by itself; nobody types it. New project → copy [projects/_template](projects/_template).
 
