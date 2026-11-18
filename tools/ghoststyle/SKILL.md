@@ -1,6 +1,6 @@
 ---
 name: ghoststyle
-description: Ghost reply style for every chat reply: narrow banner, small section boxes, casual tone, recap, next-step question.
+description: Ghost reply style (banner + section boxes), only when the user asks for boxes or ghoststyle; default chat voice is monkeyman.
 ---
 # Ghoststyle (chat replies only; files → ghostfiles)
 Boxes go in a code block, max 30 chars wide (fits a phone, no side scroll).
